@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="popup.css">
+    </head>
+    <body>
+        <div id="accountsView">
+            <div id="accounts">
+
+            </div>
+            <button id="addAccount">Account(s) hinzufügen</button>
+            <button id="exportAccounts">Exportieren</button>
+        </div>
+
+        <div id="addAccountView" style="display:none;">
+
+            <button id="importBtn">📷 QR-Code scannen o. Datei importieren</button>
+            <button id="manualEntry">Manuelle Eingabe</button>
+        </div>
+
+        <div id="manualEntryView" style="display:none;">
+
+            <h3>Neuer Account</h3>
+
+            <input id="nameInput" placeholder="Account Name" />
+
+            <div style="position: relative; margin-top: 8px; display:flex; align-items:center;">
+                <input id="secretInput" type="password" placeholder="Base32 Secret" style="flex:1; padding-right:30px;" />
+                <span id="toggleSecret" style="
+                        position:absolute;
+                        right:5px;
+                        cursor:pointer;
+                        user-select:none;
+                        font-size:16px;
+                        line-height:1;
+                    ">👁</span>
+            </div>
+
+            <label>Algorithmus:</label>
+            <select id="algorithmInput">
+                <option value="SHA-1">SHA-1</option>
+                <option value="SHA-224">SHA-224</option>
+                <option value="SHA-256">SHA-256</option>
+                <option value="SHA-384">SHA-384</option>
+                <option value="SHA-512">SHA-512</option>
+            </select>
+
+            <label>Aktualisierungszeit (Sekunden):</label>
+            <select id="periodInput">
+                <option value="10">10</option>
+                <option value="30" selected>30</option>
+                <option value="60">60</option>
+                <option value="90">90</option>
+            </select>
+
+            <label>Anzahl Ziffern:</label>
+            <select id="digitsInput">
+                <option value="5">5</option>
+                <option value="6" selected>6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+
+            <button id="saveAccount">Speichern</button>
+            <button id="deleteAccount" style="background:#d9534f;color:white;">Account löschen</button>
+            <button id="cancelAdd">Abbrechen</button>
+        </div>
+
+        <div id="passwordEntryView" style="display: none;">
+            <input id="passwordInput" type="password" placeholder="Master Password" style="flex:1; padding-right:30px;" />
+            <button id="setPasswordButton">Passwort setzten</button>
+        </div>
+
+        <script src="../Models/totp.js"></script>
+        <script src="../Models/account.js"></script>
+        <script src="../Models/converter.js"></script>
+        <script src="../Models/encryption.js"></script>
+        <script src="popup.js"></script>
+    </body>
+</html>

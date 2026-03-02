@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "TOTP Authenticator",
+  "version": "1.0",
+  "description": "Multi-account offline TOTP generator",
+  "action": {
+    "default_popup": "Views/popup.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "data_collection_permissions": {
+        "required": [
+          "authenticationInfo"
+        ]
+      }
+    }
+  }
+}

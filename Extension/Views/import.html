@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Importiere Codes</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+      }
+      .tab-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .tab-buttons button {
+        flex: 1;
+        padding: 10px;
+        border: 2px solid #ccc;
+        background: white;
+        color: #222;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .tab-buttons button.active {
+        border-color: #2196f3;
+        background: #2196f3;
+        color: white;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      #video {
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+      #canvas {
+        display: none;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      button {
+        flex: 1;
+        padding: 10px;
+        background: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      button:hover {
+        background: #0b7dda;
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+      .result {
+        margin-top: 15px;
+        padding: 10px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        display: none;
+      }
+      .result.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        display: block;
+      }
+      .result.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        display: block;
+      }
+      #fileInput {
+        display: none;
+      }
+      .status {
+        margin-top: 10px;
+        padding: 10px;
+        text-align: center;
+        color: #666;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Importiere Codes</h1>
+
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="camera">Scannen</button>
+      <button class="tab-btn" data-tab="image">Datei hochladen</button>
+    </div>
+
+    <!-- Camera Tab -->
+    <div id="camera" class="tab-content active">
+      <div class="controls">
+        <button id="startBtn">Kamera starten</button>
+        <button id="stopBtn" disabled>Kamera stoppen</button>
+      </div>
+      <video id="video" autoplay></video>
+      <canvas id="canvas"></canvas>
+      <div class="status" id="cameraStatus"></div>
+    </div>
+
+    <!-- Datei Tab -->
+    <div id="image" class="tab-content">
+      <div class="controls">
+        <button id="uploadBtn">Datei auswählen</button>
+      </div>
+      <input type="file" id="fileInput" accept=".json,.2fas,image/*">
+      <p>Lade ein Backup vom 2FAS Authenticator, dem Google Authenticator, oder ein Bild mit QR-Code hoch.</p>
+      <div id="imagePreview"></div>
+    </div>
+
+
+    <div class="result" id="result"></div>
+
+    <script src="../librarys/jsQR.js"></script>
+    <script src="../Models/qr-scanner.js"></script>
+    <script src="../Models/account.js"></script>
+    <script src="../Models/converter.js"></script>
+    <script src="../Models/encryption.js"></script>
+    <script src="import.js"></script>
+  </body>
+</html>

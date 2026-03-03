@@ -16,8 +16,6 @@ If you want to contribute to this repository, please follow these guidelines:
 4. Make shure all the tests run successfully
 5. Create a pull request and tell us what you´ve done. Make shure to answer any occuring questions within a reasonable time.
 
-
-
 ### Notes:
 * If a branch has not been committed to within the last 2 months, it can be deleted by the maintainer of this repository.
 * If you use inappropriate words in your Issue and/or your branch, the maintainer holds the right to delete the branch and/or Issue.

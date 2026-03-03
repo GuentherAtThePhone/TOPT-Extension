@@ -8,14 +8,14 @@
 - [x] Export and Import Codes from the extension
 - [x] Change sorting of Accounts in gui
 - [x] Refactoring of the initial codebase
-- [ ] Adding a settings page to be able to set preferences
-- [ ] Add the option to use darkmode
+- [x] Adding a settings page to be able to set preferences
+- [ ] implement darkmode / lightmode
 - [ ] Add multi-language support
-- [ ] Add option to sync the accounts via a Mozilla Account
-- [ ] Add option to choose font sizes
-- [ ] Add option to enable/diable or change the Master Password / Pin
-- [ ] Option to authenticate with biometics
-- [ ] Option to disable displaying the next code
+- [ ] implement syncing the accounts via a Mozilla Account
+- [ ] implement different font sizes
+- [ ] implement enabling/diableing or change the Master Password
+- [ ] implement authentication with biometics
+- [ ] implement disabling displaying the next code
 - [ ] Implement tests to existing codebase
 - [ ] remove current console debugging
 - [ ] improvements to the ui for a more universal and modern look

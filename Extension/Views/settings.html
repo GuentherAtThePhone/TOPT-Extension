@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Settings</title>
+    <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #1e293b;
+      --accent: #2563eb;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card);
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-top: 35px;
+      font-size: 18px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .setting {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: 500;
+    }
+
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f9fafb;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    select:hover {
+      border-color: var(--accent);
+    }
+
+    button {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s ease;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .primary:hover {
+      background: #1d4ed8;
+    }
+
+    .secondary {
+      background: #e2e8f0;
+    }
+
+    .secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 500px) {
+      .setting {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      select {
+        width: 100%;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .button-group button {
+        width: 100%;
+      }
+    }
+  </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Einstellungen</h1>
+
+      <h2 style="color: red;">THIS PAGE IS JUST FOR TESTING! CHANGES MADE HERE HAVE NO EFFECT!</h2>
+
+      <div class="setting">
+        <label>Theme</label>
+        <select id="themeSelect">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+          <option value="default">Browser Default</option>
+        </select>
+      </div>
+
+      <div class="setting">
+        <label>Language</label>
+        <select id="languageSelect">
+          <option value="en-us">English</option>
+          <option value="de-de">Deutsch</option>
+        </select>
+      </div>
+
+      <div class="setting">
+        <label>Sync with Mozilla Account</label>
+        <select id="syncMozillaSelect">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <div class="setting">
+        <label>Font Size</label>
+        <select id="fontSizeSelect">
+          <option value="small">Small</option>
+          <option value="medium">Medium</option>
+          <option value="large">Large</option>
+        </select>
+      </div>
+
+      <div class="setting">
+        <label>Show next code</label>
+        <select id="showNextCodeSelect">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <h2>Passwort</h2>
+
+      <div class="setting">
+        <label>Use Master Password</label>
+        <select id="useMasterPasswordSelect">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <div class="setting">
+        <label>Use biometrics to authenticate</label>
+        <select id="useBiometricsSelect">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <button class="secondary">Change Passwort</button>
+        <button class="primary">Save</button>
+      </div>
+    </div>
+
+    <script src="../Models/account.js"></script>
+    <script src="../Models/encryption.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>

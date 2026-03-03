@@ -1,4 +1,5 @@
 // ------------------ Element References ------------------
+const settingsBtn = document.getElementById("settingsBtn");
 const accountsView = document.getElementById("accountsView");
 const accountsDiv = document.getElementById("accounts");
 const addAccountBtn = document.getElementById("addAccount");
@@ -34,6 +35,15 @@ let unlockedPassword = null;
 var password;
 
 // ------------------ Button Event Listeners ------------------
+
+settingsBtn.addEventListener("click", () => {
+  try{
+    browser.tabs.create({ url: browser.runtime.getURL('../Views/settings.html') });
+  } catch (e) {
+    alert('Einstellungen-Seite konnte nicht geöffnet werden.');
+  }
+  window.close();
+});
 
 addAccountBtn.addEventListener("click", () => showAddOptions());
 
@@ -124,14 +134,26 @@ cancelAddBtn.addEventListener("click", showAccountsView);
 
 // ------------------ Functions -----------------
 
-function waitForButtonClick(buttonElement) {
+function waitForButtonClick(buttonElement, inputElement) {
   return new Promise((resolve) => {
-    function handler(event) {
-      buttonElement.removeEventListener("click", handler);
-      resolve(event); // optional: Event zurückgeben
+    function cleanup(event) {
+      buttonElement.removeEventListener("click", onClick);
+      inputElement.removeEventListener("keydown", onKeyDown);
+      resolve(event);
     }
 
-    buttonElement.addEventListener("click", handler);
+    function onClick(event) {
+      cleanup(event);
+    }
+
+    function onKeyDown(event) {
+      if (event.key === "Enter") {
+        cleanup(event);
+      }
+    }
+
+    buttonElement.addEventListener("click", onClick);
+    inputElement.addEventListener("keydown", onKeyDown);
   });
 }
 
@@ -142,7 +164,7 @@ async function setPassword() {
   passwordEntryView.style.display = "block";
 
   console.log("Warte auf button klick");
-  await waitForButtonClick(passwordSetBtn);
+  await waitForButtonClick(passwordSetBtn, passwordInput);
   console.log("Button klicked");
   
   accountsView.style.display = "block";

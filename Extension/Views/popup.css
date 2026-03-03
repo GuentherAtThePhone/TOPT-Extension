@@ -95,3 +95,20 @@ button, input, select {
   padding: 6px;
   box-sizing: border-box;
 }
+
+#accountsView{
+  display: flex;
+  flex-direction: column;
+}
+
+#settingsBtn{
+  width: auto;
+  align-self: flex-end;
+  margin-top: 0px;
+  padding: 0px;
+  font-weight: bold;
+  font-size: 30px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}

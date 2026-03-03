@@ -4,9 +4,14 @@ let scanning = false;
 const tabs = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
-var password = getSessionPassword();
+var password;
+var accounts;
 
-let accounts = await loadAccounts(password);
+window.onload = async () => {
+  password = await getSessionPassword();
+
+  accounts = await loadAccounts(password);
+}
 
 // Tab switching
 tabs.forEach(tab => {

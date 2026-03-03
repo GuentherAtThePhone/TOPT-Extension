@@ -1,6 +1,5 @@
 class Settings{
     theme;
-    language;
     syncMozilla;
     fontSize;
     nextCode;
@@ -18,20 +17,22 @@ class Settings{
 }
 
 const themeSelect = document.getElementById("themeSelect");
-const languageSelect = document.getElementById("languageSelect");
 const syncMozillaSelect = document.getElementById("syncMozillaSelect");
 const fontSizeSelect = document.getElementById("fontSizeSelect");
 const showNextCodeSelect = document.getElementById("showNextCodeSelect");
 const useMasterPasswordSelect = document.getElementById("useMasterPasswordSelect");
 const useBiometricsSelect = document.getElementById("useBiometricsSelect");
 
+document.querySelectorAll('[data-i18n]').forEach(el => {
+  const key = el.getAttribute('data-i18n');
+  el.textContent = browser.i18n.getMessage(key);
+});
 
 async function createDefaultSettings(){
     var result = await browser.storage.local.get("masterPasswordEnabled");
 
     var settings = new Settings(
         "default",
-        "en-us",
         false,
         "medium",
         true,
@@ -52,7 +53,6 @@ browser.storage.local.get("settings").then(async result => {
     
     // TODO
     themeSelect.value = settings.theme;
-    languageSelect.value = settings.language;
     syncMozillaSelect.value = settings.syncMozilla.toString();
     fontSizeSelect.value = settings.fontSize;
     showNextCodeSelect.value = settings.nextCode.toString();

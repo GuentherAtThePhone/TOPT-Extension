@@ -4,6 +4,11 @@ let scanning = false;
 const tabs = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
+document.querySelectorAll('[data-i18n]').forEach(el => {
+  const key = el.getAttribute('data-i18n');
+  el.textContent = browser.i18n.getMessage(key);
+});
+
 var password;
 var accounts;
 
@@ -51,10 +56,10 @@ async function startCamera() {
     scanning = true;
     startBtn.disabled = true;
     stopBtn.disabled = false;
-    cameraStatus.textContent = 'Scanning... Zeige einen QR-Code in die Kamera';
+    cameraStatus.textContent = browser.i18n.getMessage("cameraStatusScanningText");
     scanQRCode();
   } catch (err) {
-    showResult('Fehler beim Zugriff auf Kamera: ' + err.message, 'error');
+    
   }
 }
 
@@ -98,21 +103,17 @@ function scanQRCode() {
 uploadBtn.addEventListener('click', () => fileInput.click());
 
 fileInput.addEventListener('change', async (e) => {
-  console.log('File input changed, processing file...');
     const file = e.target.files[0];
     console.log('Selected file for import:', file);
     if (!file) return;
     var accs;
     var qrResult;
-    console.log('Importing file:', file.name);
     try{
         if(file.name.toLowerCase().endsWith('.json') || file.name.toLowerCase().endsWith('.2fas')){
             if(file.name.toLowerCase().endsWith('.json')){
-              console.log('Parsing JSON file:', file.name);
               accs = parseJson(await file.text());
               console.log('Parsed accounts from JSON file:', accs);
             }else{
-              console.log('Parsing 2FAS file:', file.name);
               accs = await parse2fas(await file.text());
               console.log('Parsed accounts from 2FAS file:', accs);
             }
@@ -150,14 +151,14 @@ fileInput.addEventListener('change', async (e) => {
         }
   }catch(err){
       console.error('Import Fehler:', err);
-      alert('Import fehlgeschlagen: ' + err.message);
+      alert(browser.i18n.getMessage("importFailedText") + err.message);
   }
   if(accs && accs.length && qrResult === undefined){
       console.log('Importing accounts:', accs);
       accounts.push(...accs);
       console.log('Imported accounts:', accs);
       await saveAccounts(accounts, password);
-      alert('Import erfolgreich! ' + accs.length + ' Account(s) wurden hinzugefügt.');
+      alert(browser.i18n.getMessage("importSuccessfullText").replace("{accs.lenght}", accs.length));
       window.close();
   }else{
   }
@@ -186,9 +187,7 @@ async function processQRCode(qrResult) {
       accounts.push(...accs);
       console.log('Imported accounts:', accs);
       await saveAccounts(accounts, password);
-      alert('Import erfolgreich! ' + accs.length + ' Account(s) wurden hinzugefügt.');
+      alert(browser.i18n.getMessage("importSuccessfullText").replace("{accs.lenght}", accs.length));
       window.close();
-  }else{
   }
-
 }

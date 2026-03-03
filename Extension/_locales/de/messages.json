@@ -1,0 +1,151 @@
+{
+  "appName": {
+    "message": "Meine Erweiterung",
+    "description": "Name der Erweiterung"
+  },
+  "greeting": {
+    "message": "Hallo!",
+    "description": "Begrüßung im Popup"
+  },
+
+
+  "addAccount":{
+    "message": "Account(s) hinzufügen"
+  }, 
+  "exportAccounts":{
+    "message": "Accounts exportieren"
+  },
+  "importBtnText":{
+    "message": "📷 QR-Code scannen o. Datei importieren"
+  }, 
+  "enterManualButtonText":{
+    "message": "Manuelle Eingabe"
+  },
+  "newAccountText":{
+    "message": "Neuer Account"
+  }, 
+  "editAccountText":{
+    "message": "Account Bearbeiten"
+  },
+  "algorithmText":{
+    "message": "Algorithmus"
+  }, 
+  "refreshPeriodText":{
+    "message": "Aktualisierungszeit (Sekunden):"
+  },
+  "numbersText":{
+    "message": "Anzahl Ziffern:"
+  },
+  "saveText":{
+    "message": "Speichern"
+  }, 
+  "deleteAccountText":{
+    "message": "Account Löschen"
+  },
+  "cancelBtnText":{
+    "message": "Abbrechen"
+  },
+  "setPasswordBtnText":{
+    "message": "Passwort eingeben"
+  },
+  "nextCodeText":{
+    "message": "Nächster: "
+  },
+  "timeTillNextCode":{
+    "message": "s verbleiben"
+  },
+  "confirmDeleteAccountText":{
+    "message": "Willst du den Account \"{accName}\" wirklich löschen?"
+  },
+  "ExportFailedText":{
+    "message": "Keine Accounts zum Exportieren vorhanden."
+  },
+
+
+  "importCodesText":{
+    "message": "Importiere Codes"
+  },
+  "scanText":{
+    "message": "Scannen"
+  },
+  "uploadFileText":{
+    "message": "Datei hochladen"
+  },
+  "startCameraBtnText":{
+    "message": "Kamera starten"
+  },
+  "stopCameraBtnText":{
+    "message": "Kamera stoppen"
+  },
+  "chooseFileText":{
+    "message": "Datei auswählen"
+  },
+  "fileUploadExplanationText":{
+    "message": "Lade ein Backup vom 2FAS Authenticator, dem Google Authenticator, oder ein Bild mit QR-Code hoch."
+  },
+  "cameraStatusScanningText":{
+    "message": "Scanne... Zeige einen QR-Code in die Kamera"
+  },
+  "importFailedText":{
+    "message": "Import fehlgeschlagen: "
+  },
+  "importSuccessfullText":{
+    "message": "Import erfolgreich! \"{accs.length}\" Account(s) wurden hinzugefügt."
+  },
+
+
+  "yes":{
+    "message": "Ja"
+  },
+  "no":{
+    "message": "Nein"
+  },
+  "settingsText":{
+    "message": "Einstellungen"
+  },
+  "themeText":{
+    "message": "Theme"
+  },
+  "themeDarkText":{
+    "message": "Dunkel"
+  },
+  "themeLightText":{
+    "message": "Hell"
+  },
+  "themeDefaultText":{
+    "message": "Browser Standart"
+  },
+  "syncWithMozillaText":{
+    "message": "Sync mit Mozilla Account"
+  },
+  "fontSizeText":{
+    "message": "Schriftgröße"
+  },
+  "fontSizeSmall":{
+    "message": "Klein"
+  },
+  "fontSizeMedium":{
+    "message": "Mittel"
+  },
+  "fontSizeLarge":{
+    "message": "Groß"
+  },
+  "passwordText":{
+    "message": "Passwort"
+  },
+  "showNextCodeText":{
+    "message": "Nächsten Code anzeigen"
+  },
+  "useMasterPasswordText":{
+    "message": "Master Passwort Nutzen"
+  },
+  "useBiometricsText":{
+    "message": "Biometrie zur authentizierung nutzen"
+  },
+  "changePasswordText":{
+    "message": "Passwort ändern"
+  },
+  "saveBtnText":{
+    "message": "Speichern"
+  }
+}

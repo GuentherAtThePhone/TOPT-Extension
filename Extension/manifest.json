@@ -3,6 +3,7 @@
   "name": "TOTP Authenticator",
   "version": "1.0",
   "description": "Multi-account offline TOTP generator",
+  "default_locale": "en",
   "action": {
     "default_popup": "Views/popup.html"
   },

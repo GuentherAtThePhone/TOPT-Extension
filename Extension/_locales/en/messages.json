@@ -1,0 +1,150 @@
+{
+  "appName": {
+    "message": "My Extension",
+    "description": "Name of the extension"
+  },
+  "greeting": {
+    "message": "Hello!",
+    "description": "Greeting in popup"
+  },
+
+  "addAccount":{
+    "message": "Add Account(s)"
+  }, 
+  "exportAccounts":{
+    "message": "Export Accounts"
+  },
+  "importBtnText":{
+    "message": "📷 Scan QR-Code or import file"
+  }, 
+  "enterManualButtonText":{
+    "message": "enter manually"
+  },
+  "newAccountText":{
+    "message": "New Account"
+  }, 
+  "editAccountText":{
+    "message": "Edit Account"
+  },
+  "algorithmText":{
+    "message": "Algorithm"
+  }, 
+  "refreshPeriodText":{
+    "message": "Refresh period (seconds):"
+  },
+  "numbersText":{
+    "message": "Digits:"
+  },
+  "saveText":{
+    "message": "Save"
+  }, 
+  "deleteAccountText":{
+    "message": "Delete Account"
+  },
+  "cancelBtnText":{
+    "message": "Cancel"
+  },
+  "setPasswordBtnText":{
+    "message": "Enter Password"
+  },
+  "nextCodeText":{
+    "message": "next: "
+  },
+  "timeTillNextCode":{
+    "message": "s remaining"
+  },
+  "confirmDeleteAccountText":{
+    "message": "Do you really want to delete the Account \"{accName}\" ?"
+  },
+  "ExportFailedText":{
+    "message": "No codes available to export."
+  },
+
+
+  "importCodesText":{
+    "message": "Import Codes"
+  },
+  "scanText":{
+    "message": "Scan"
+  },
+  "uploadFileText":{
+    "message": "Upload file"
+  },
+  "startCameraBtnText":{
+    "message": "Start Camera"
+  },
+  "stopCameraBtnText":{
+    "message": "Stop Camera"
+  },
+  "chooseFileText":{
+    "message": "Choose file"
+  },
+  "fileUploadExplanationText":{
+    "message": "Upload a backup from 2FAS Authenticator, Google Authenticator, or a picture with a QR-Code."
+  },
+  "cameraStatusScanningText":{
+    "message": "Scanning... Show QR-Code to the Camera"
+  },
+  "importFailedText":{
+    "message": "Import failed: "
+  },
+  "importSuccessfullText":{
+    "message": "Import successfull! \"{accs.length}\" Account(s) imported."
+  },
+
+
+  "yes":{
+    "message": "Yes"   
+  },
+  "no":{
+    "message": "No"
+  },
+  "settingsText":{
+    "message": "Settings"
+  },
+  "themeText":{
+    "message": "Theme"
+  },
+  "themeDarkText":{
+    "message": "Dark"
+  },
+  "themeLightText":{
+    "message": "Light"
+  },
+  "themeDefaultText":{
+    "message": "Browser Default"
+  },
+  "syncWithMozillaText":{
+    "message": "Sync with Mozilla Account"
+  },
+  "fontSizeText":{
+    "message": "Font Size"
+  },
+  "fontSizeSmall":{
+    "message": "Small"
+  },
+  "fontSizeMedium":{
+    "message": "Medium"
+  },
+  "fontSizeLarge":{
+    "message": "Large"
+  },
+  "passwordText":{
+    "message": "Password"
+  },
+  "showNextCodeText":{
+    "message": "Show next Code"
+  },
+  "useMasterPasswordText":{
+    "message": "Use Masterpassword"
+  },
+  "useBiometricsText":{
+    "message": "Use biometrie to authenticate"
+  },
+  "changePasswordText":{
+    "message": "Change Password"
+  },
+  "saveBtnText":{
+    "message": "Save"
+  }
+}

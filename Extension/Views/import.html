@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Importiere Codes</title>
+    <title data-i18n="importCodesText"></title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -101,18 +101,18 @@
     </style>
   </head>
   <body>
-    <h1>Importiere Codes</h1>
+    <h1 data-i18n="importCodesText"></h1>
 
     <div class="tab-buttons">
-      <button class="tab-btn active" data-tab="camera">Scannen</button>
-      <button class="tab-btn" data-tab="image">Datei hochladen</button>
+      <button data-i18n="scanText" class="tab-btn active" data-tab="camera"></button>
+      <button data-i18n="uploadFileText" class="tab-btn" data-tab="image"></button>
     </div>
 
     <!-- Camera Tab -->
     <div id="camera" class="tab-content active">
       <div class="controls">
-        <button id="startBtn">Kamera starten</button>
-        <button id="stopBtn" disabled>Kamera stoppen</button>
+        <button data-i18n="startCameraBtnText" id="startBtn"></button>
+        <button data-i18n="stopCameraBtnText" id="stopBtn" disabled></button>
       </div>
       <video id="video" autoplay></video>
       <canvas id="canvas"></canvas>
@@ -122,10 +122,10 @@
     <!-- Datei Tab -->
     <div id="image" class="tab-content">
       <div class="controls">
-        <button id="uploadBtn">Datei auswählen</button>
+        <button data-i18n="chooseFileText" id="uploadBtn"></button>
       </div>
       <input type="file" id="fileInput" accept=".json,.2fas,image/*">
-      <p>Lade ein Backup vom 2FAS Authenticator, dem Google Authenticator, oder ein Bild mit QR-Code hoch.</p>
+      <p data-i18n="fileUploadExplanationText"></p>
       <div id="imagePreview"></div>
     </div>
 

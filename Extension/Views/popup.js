@@ -40,7 +40,6 @@ settingsBtn.addEventListener("click", () => {
   try{
     browser.tabs.create({ url: browser.runtime.getURL('../Views/settings.html') });
   } catch (e) {
-    alert('Einstellungen-Seite konnte nicht geöffnet werden.');
   }
   window.close();
 });
@@ -49,7 +48,7 @@ addAccountBtn.addEventListener("click", () => showAddOptions());
 
 exportAccountsBtn.addEventListener("click", () => {
   if (!accounts.length) {
-    alert("Keine Accounts zum Exportieren vorhanden.");
+    alert(browser.i18n.getMessage("ExportFailedText"));
     return;
   }
 
@@ -71,7 +70,6 @@ importBtn.addEventListener("click", () => {
   try {
     browser.tabs.create({ url: browser.runtime.getURL('../Views/import.html') });
   } catch (e) {
-    alert('Import-Seite konnte nicht geöffnet werden.');
   }
   window.close();
 });
@@ -92,7 +90,7 @@ deleteBtn.addEventListener("click", async () => {
   if (editingIndex !== null) {
     const acc = accounts[editingIndex];
     // Bestätigungsdialog
-    const confirmed = confirm(`Willst du den Account "${acc.name}" wirklich löschen?`);
+    const confirmed = confirm(browser.i18n.getMessage("confirmDeleteAccountText").replace("{accName}", acc.name));
     if (!confirmed) return;
 
     accounts.splice(editingIndex, 1);
@@ -163,9 +161,7 @@ async function setPassword() {
   manualEntryView.style.display = "none";
   passwordEntryView.style.display = "block";
 
-  console.log("Warte auf button klick");
   await waitForButtonClick(passwordSetBtn, passwordInput);
-  console.log("Button klicked");
   
   accountsView.style.display = "block";
   addAccountView.style.display = "none";
@@ -369,11 +365,11 @@ async function updateCodes() {
     }
 
     // --- UI Update für Next Code nur wenn remaining <=10 ---
-    const nextText = remaining <= 10 ? "Next: " + el.nextCode : "";
+    const nextText = remaining <= 10 ? browser.i18n.getMessage("nextCodeText") + el.nextCode : "";
     if (el.nextCodeEl.textContent !== nextText) el.nextCodeEl.textContent = nextText;
 
     // --- Timer immer aktualisieren ---
-    el.timerEl.textContent = remaining + "s remaining";
+    el.timerEl.textContent = remaining + browser.i18n.getMessage("timeTillNextCode");
   }
 }
 
@@ -438,6 +434,11 @@ function restoreUIState(state) {
   .forEach(input => {
     input.addEventListener("input", saveUIState);
     input.addEventListener("change", saveUIState);
+});
+
+document.querySelectorAll('[data-i18n]').forEach(el => {
+  const key = el.getAttribute('data-i18n');
+  el.textContent = browser.i18n.getMessage(key);
 });
 
 browser.storage.local.get(["uiState"]).then(async result => {

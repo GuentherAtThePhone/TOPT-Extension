@@ -10,19 +10,19 @@
             <div id="accounts">
 
             </div>
-            <button id="addAccount">Account(s) hinzufügen</button>
-            <button id="exportAccounts">Exportieren</button>
+            <button id="addAccount" data-i18n="addAccount"></button>
+            <button id="exportAccounts" data-i18n="exportAccounts"></button>
         </div>
 
         <div id="addAccountView" style="display:none;">
 
-            <button id="importBtn">📷 QR-Code scannen o. Datei importieren</button>
-            <button id="manualEntry">Manuelle Eingabe</button>
+            <button id="importBtn" data-i18n="importBtnText"></button>
+            <button id="manualEntry" data-i18n="enterManualButtonText"></button>
         </div>
 
         <div id="manualEntryView" style="display:none;">
 
-            <h3>Neuer Account</h3>
+            <h3 data-i18n="newAccountText"></h3>
 
             <input id="nameInput" placeholder="Account Name" />
 
@@ -38,7 +38,7 @@
                     ">👁</span>
             </div>
 
-            <label>Algorithmus:</label>
+            <label data-i18n="algorithmText"></label>
             <select id="algorithmInput">
                 <option value="SHA-1">SHA-1</option>
                 <option value="SHA-224">SHA-224</option>
@@ -47,7 +47,7 @@
                 <option value="SHA-512">SHA-512</option>
             </select>
 
-            <label>Aktualisierungszeit (Sekunden):</label>
+            <label data-i18n="refreshPeriodText"></label>
             <select id="periodInput">
                 <option value="10">10</option>
                 <option value="30" selected>30</option>
@@ -55,7 +55,7 @@
                 <option value="90">90</option>
             </select>
 
-            <label>Anzahl Ziffern:</label>
+            <label data-i18n="numbersText"></label>
             <select id="digitsInput">
                 <option value="5">5</option>
                 <option value="6" selected>6</option>
@@ -63,14 +63,14 @@
                 <option value="8">8</option>
             </select>
 
-            <button id="saveAccount">Speichern</button>
-            <button id="deleteAccount" style="background:#d9534f;color:white;">Account löschen</button>
-            <button id="cancelAdd">Abbrechen</button>
+            <button id="saveAccount" data-i18n="saveText"></button>
+            <button id="deleteAccount" data-i18n="deleteAccountText" style="background:#d9534f;color:white;"></button>
+            <button id="cancelAdd" data-i18n="cancelBtnText"></button>
         </div>
 
         <div id="passwordEntryView" style="display: none;">
             <input id="passwordInput" type="password" placeholder="Master Password" style="flex:1; padding-right:30px;" />
-            <button id="setPasswordButton">Passwort setzten</button>
+            <button id="setPasswordButton" data-i18n="setPasswordBtnText"></button>
         </div>
 
         <script src="../Models/totp.js"></script>

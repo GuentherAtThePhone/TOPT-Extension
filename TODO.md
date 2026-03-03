@@ -10,7 +10,7 @@
 - [x] Refactoring of the initial codebase
 - [x] Adding a settings page to be able to set preferences
 - [ ] implement darkmode / lightmode
-- [ ] Add multi-language support
+- [x] Add multi-language support
 - [ ] implement syncing the accounts via a Mozilla Account
 - [ ] implement different font sizes
 - [ ] implement enabling/diableing or change the Master Password

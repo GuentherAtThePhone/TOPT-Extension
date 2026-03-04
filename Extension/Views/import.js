@@ -13,9 +13,16 @@ var password;
 var accounts;
 
 window.onload = async () => {
+
+  if(await isDarkMode()){
+    document.body.classList.add("dark");   // Dark
+  }
+
   password = await getSessionPassword();
 
   accounts = await loadAccounts(password);
+
+
 }
 
 // Tab switching

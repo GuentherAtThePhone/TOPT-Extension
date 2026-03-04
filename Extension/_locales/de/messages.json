@@ -1,14 +1,4 @@
 {
-  "appName": {
-    "message": "Meine Erweiterung",
-    "description": "Name der Erweiterung"
-  },
-  "greeting": {
-    "message": "Hallo!",
-    "description": "Begrüßung im Popup"
-  },
-
-
   "addAccount":{
     "message": "Account(s) hinzufügen"
   }, 
@@ -113,7 +103,7 @@
     "message": "Hell"
   },
   "themeDefaultText":{
-    "message": "Browser Standart"
+    "message": "Browser Standard"
   },
   "syncWithMozillaText":{
     "message": "Sync mit Mozilla Account"
@@ -140,7 +130,7 @@
     "message": "Master Passwort Nutzen"
   },
   "useBiometricsText":{
-    "message": "Biometrie zur authentizierung nutzen"
+    "message": "Biometrie zur authentifizierung nutzen"
   },
   "changePasswordText":{
     "message": "Passwort ändern"

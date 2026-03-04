@@ -193,6 +193,7 @@ function showAddView(editIndex = null) {
     algorithmInput.value = acc.algorithm || "SHA-1";
     periodInput.value = acc.period || 30;
     deleteBtn.style.display = "block";
+    document.getElementById("newAccountLabel").textContent = browser.i18n.getMessage("editAccountText");
   } else {
     nameInput.value = "";
     secretInput.value = "";
@@ -200,6 +201,7 @@ function showAddView(editIndex = null) {
     algorithmInput.value = "SHA-1";
     periodInput.value = 30;
     deleteBtn.style.display = "none";
+    document.getElementById("newAccountLabel").textContent = browser.i18n.getMessage("newAccountText");
   }
 
   secretInput.type = "password";
@@ -443,13 +445,15 @@ document.querySelectorAll('[data-i18n]').forEach(el => {
 
 browser.storage.local.get(["uiState"]).then(async result => {
 
-  console.log("popup-page loaded")
-
   password = await getSessionPassword();
 
   accounts = await loadAccounts(password);
   renderAccounts();
   restoreUIState(result.uiState);
+
+  if(await isDarkMode()){
+    document.body.classList.add("dark");   // Dark
+  }
 });
 
 setInterval(updateCodes, 500);

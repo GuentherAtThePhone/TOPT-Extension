@@ -1,0 +1,146 @@
+:root {
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #1e293b;
+    --accent: #2563eb;
+    --border: #e2e8f0;
+    --radius: 12px;
+}
+
+body.dark {
+    --bg: #0f172a;           /* Hintergrund */
+    --card: #1e293b;         /* Karten */
+    --text: #e2e8f0;         /* Haupttext */
+    --accent: #3b82f6;       /* Akzent etwas heller */
+    --border: #334155;       /* dezente Borders */
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--card);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin-top: 35px;
+    font-size: 18px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    gap: 15px;
+}
+
+label {
+    font-weight: 500;
+}
+
+select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #f9fafb;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+select:hover {
+    border-color: var(--accent);
+}
+
+button {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.primary {
+    background: var(--accent);
+    color: white;
+}
+
+.primary:hover {
+    background: #1d4ed8;
+}
+
+.secondary {
+    background: #e2e8f0;
+}
+
+.secondary:hover {
+    background: #cbd5e1;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+/* Select Anpassung */
+select {
+    background: var(--card);
+    color: var(--text);
+}
+
+body.dark select {
+    background: #0f172a;
+}
+
+/* Secondary Button */
+.secondary {
+    background: var(--border);
+    color: var(--text);
+}
+
+body.dark .secondary {
+    background: #334155;
+}
+
+@media (max-width: 500px) {
+    .setting {
+    flex-direction: column;
+    align-items: flex-start;
+    }
+
+    select {
+    width: 100%;
+    }
+
+    .button-group {
+    flex-direction: column;
+    }
+
+    .button-group button {
+    width: 100%;
+    }
+}

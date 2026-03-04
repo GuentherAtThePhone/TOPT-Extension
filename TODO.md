@@ -9,16 +9,16 @@
 - [x] Change sorting of Accounts in gui
 - [x] Refactoring of the initial codebase
 - [x] Adding a settings page to be able to set preferences
-- [ ] implement darkmode / lightmode
+- [x] implement darkmode / lightmode
 - [x] Add multi-language support
 - [ ] implement syncing the accounts via a Mozilla Account
 - [ ] implement different font sizes
 - [ ] implement enabling/diableing or change the Master Password
 - [ ] implement authentication with biometics
-- [ ] implement disabling displaying the next code
+- [ ] implement option to disabke displaying the next code
 - [ ] Implement tests to existing codebase
 - [ ] remove current console debugging
-- [ ] improvements to the ui for a more universal and modern look
+- [x] improvements to the ui for a more universal and modern look
 - [ ] Chrome support
 - [ ] Edge support
 - [ ] Firefox Android Browser support

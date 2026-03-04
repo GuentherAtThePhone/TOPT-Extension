@@ -1,13 +1,4 @@
 {
-  "appName": {
-    "message": "My Extension",
-    "description": "Name of the extension"
-  },
-  "greeting": {
-    "message": "Hello!",
-    "description": "Greeting in popup"
-  },
-
   "addAccount":{
     "message": "Add Account(s)"
   }, 

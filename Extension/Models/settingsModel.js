@@ -44,3 +44,11 @@ async function isDarkMode(){
     
     return (result.settings.theme === "dark") ? true : false;
 }
+
+async function isShowNextCode(){
+    var result = await browser.storage.local.get("settings");
+    if(!result.settings)
+        return true;
+
+    return result.settings.nextCode;
+}

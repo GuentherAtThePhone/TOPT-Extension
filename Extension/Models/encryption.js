@@ -158,7 +158,7 @@ async function getSessionPassword(){
 
     var accounts = browser.storage.local.get("accounts");
     if(accounts.accounts){ // Allready accounts saved from previous version
-      await saveAccounts(accounts, password);
+      await saveAccounts(accounts.accounts, password);
     }
   }
 
@@ -195,4 +195,23 @@ async function getSessionPassword(){
 
   return await browser.storage.session.get("sessionPassword").sessionPassword;
 
+}
+
+async function changePassword(oldPW, newPW){
+  
+  //TODO
+
+  saveMasterPassword(newPW);
+  var accounts = browser.storage.local.get("accounts");
+  if(accounts.accounts){ // Allready accounts saved from previous version
+    try{
+      accounts = await loadAccounts(oldPW);
+    }catch{
+      accounts = accounts.accounts;
+    }
+    
+    await saveAccounts(accounts, newPW);
+  }
+
+  //authenticate session with newpw
 }

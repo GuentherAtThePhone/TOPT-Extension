@@ -33,6 +33,7 @@ let lastTimeSlot = [];
 let editingIndex = null;
 let unlockedPassword = null;
 var password;
+var showNextCode;
 
 // ------------------ Button Event Listeners ------------------
 
@@ -368,7 +369,9 @@ async function updateCodes() {
 
     // --- UI Update für Next Code nur wenn remaining <=10 ---
     const nextText = remaining <= 10 ? browser.i18n.getMessage("nextCodeText") + el.nextCode : "";
-    if (el.nextCodeEl.textContent !== nextText) el.nextCodeEl.textContent = nextText;
+    if ((el.nextCodeEl.textContent !== nextText) && showNextCode){
+      el.nextCodeEl.textContent = nextText;
+    } 
 
     // --- Timer immer aktualisieren ---
     el.timerEl.textContent = remaining + browser.i18n.getMessage("timeTillNextCode");
@@ -448,12 +451,14 @@ browser.storage.local.get(["uiState"]).then(async result => {
   password = await getSessionPassword();
 
   accounts = await loadAccounts(password);
-  renderAccounts();
-  restoreUIState(result.uiState);
 
   if(await isDarkMode()){
     document.body.classList.add("dark");   // Dark
   }
+  showNextCode = await isShowNextCode();
+
+  renderAccounts();
+  restoreUIState(result.uiState);
 });
 
 setInterval(updateCodes, 500);

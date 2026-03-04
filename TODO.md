@@ -11,16 +11,16 @@
 - [x] Adding a settings page to be able to set preferences
 - [x] implement darkmode / lightmode
 - [x] Add multi-language support
-- [ ] implement syncing the accounts via a Mozilla Account
 - [ ] implement different font sizes
 - [ ] implement enabling/diableing or change the Master Password
-- [ ] implement authentication with biometics
-- [ ] implement option to disabke displaying the next code
+- [x] implement option to disable displaying the next code
 - [ ] Implement tests to existing codebase
 - [ ] remove current console debugging
 - [x] improvements to the ui for a more universal and modern look
+- [ ] Allow export of codes in formats for other apps (.2fas, google authenticator, ...)
 - [ ] Chrome support
 - [ ] Edge support
 - [ ] Firefox Android Browser support
 - [ ] Opera support
-- [ ] Allow export of codes in formats for other apps (.2fas, google authenticator, ...)
+- [ ] implement syncing the accounts via a Mozilla Account
+- [ ] implement authentication with biometics

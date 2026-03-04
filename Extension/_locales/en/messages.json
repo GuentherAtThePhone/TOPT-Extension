@@ -93,6 +93,9 @@
   "settingsText":{
     "message": "Settings"
   },
+  "apperanceText":{
+    "message": "Appearance"
+  },
   "themeText":{
     "message": "Theme"
   },

@@ -42,9 +42,8 @@ async function encrypt(text, password) {
 }
 
 async function decrypt(encryptedData, password) {
-const dec = new TextDecoder();
+  const dec = new TextDecoder();
   const enc = new TextEncoder();
-
   const { encrypted, iv, salt } = encryptedData;
 
   // Passwort importieren
@@ -55,7 +54,6 @@ const dec = new TextDecoder();
     false,
     ["deriveKey"]
   );
-
   // Key wieder exakt gleich ableiten
   const key = await crypto.subtle.deriveKey(
     {
@@ -69,7 +67,6 @@ const dec = new TextDecoder();
     false,
     ["decrypt"]
   );
-
   // Entschlüsseln
   const decrypted = await crypto.subtle.decrypt(
     {
@@ -79,7 +76,6 @@ const dec = new TextDecoder();
     key,
     new Uint8Array(encrypted)
   );
-
   return dec.decode(decrypted);
 }
 
@@ -103,7 +99,6 @@ async function setMasterPassword(){
   console.log("Setting master password...");
 
   const password = await setPassword();
-  console.log("Password set", password);
 
   if(!password){
     await browser.storage.local.set({ masterPasswordEnabled: false });
@@ -192,26 +187,27 @@ async function getSessionPassword(){
   // Is initialized and master password is enabled and already authenticated
 
   console.log("already authenticated", await browser.storage.session.get("sessionPassword"));
+  password = await browser.storage.session.get("sessionPassword");
 
-  return await browser.storage.session.get("sessionPassword").sessionPassword;
+  return password.sessionPassword;
 
 }
 
 async function changePassword(oldPW, newPW){
-  
-  //TODO
 
-  saveMasterPassword(newPW);
   var accounts = browser.storage.local.get("accounts");
   if(accounts.accounts){ // Allready accounts saved from previous version
     try{
       accounts = await loadAccounts(oldPW);
     }catch{
-      accounts = accounts.accounts;
+      accounts = [];
     }
+
+    saveMasterPassword(newPW);
     
     await saveAccounts(accounts, newPW);
   }
 
-  //authenticate session with newpw
+  browser.storage.session.set({ isAuthenticated: true });
+  browser.storage.session.set({ sessionPassword: newPW })
 }

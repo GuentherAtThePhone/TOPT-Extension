@@ -12,7 +12,7 @@
 - [x] implement darkmode / lightmode
 - [x] Add multi-language support
 - [ ] implement different font sizes
-- [ ] implement enabling/diableing or change the Master Password
+- [x] implement enabling/diableing or change the Master Password
 - [x] implement option to disable displaying the next code
 - [ ] Implement tests to existing codebase
 - [ ] remove current console debugging

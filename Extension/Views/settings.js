@@ -8,6 +8,8 @@ const useBiometricsSelect = document.getElementById("useBiometricsSelect");
 const saveBtn = document.getElementById("saveBtn");
 const changePwBtn = document.getElementById("changePwBtn");
 
+var useMasterPasswordChanged = false;
+
 saveBtn.addEventListener('click', saveSettings);
 
 document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -15,10 +17,10 @@ document.querySelectorAll('[data-i18n]').forEach(el => {
   el.textContent = browser.i18n.getMessage(key);
 });
 
-changePwBtn.addEventListener('click', () => {
+changePwBtn.addEventListener('click', async () => {
     var oldPW = getSessionPassword();
     var newPW = prompt("Enter new Password");
-    changePassword(oldPW, newPW);
+    await changePassword(oldPW, newPW);
 });
 
 useMasterPasswordSelect.addEventListener('change', () => {
@@ -27,6 +29,7 @@ useMasterPasswordSelect.addEventListener('change', () => {
     }else{
         changePwBtn.style.display = "none";
     }
+    useMasterPasswordChanged = true;
 });
 
 browser.storage.local.get("settings").then(async result => {
@@ -64,6 +67,7 @@ async function saveSettings(){
         useMasterPasswordSelect.value === "true",
         useBiometricsSelect.value === "true"
     );
+
     await browser.storage.local.set({settings : settings});
 
     if(await isDarkMode()){
@@ -71,5 +75,28 @@ async function saveSettings(){
     } else{
         document.body.classList.remove("dark");
     }
-}
 
+    if(useMasterPasswordChanged){
+        var result = await browser.storage.local.get("masterPasswordEnabled");
+        if(settings.masterPasswordEnabled && !result.masterPasswordEnabled){ // Masterpassword got  activated
+            var password;
+            do{
+                password = prompt("Enter new Master Password");
+            } while (!password);
+            await changePassword(undefined, password);
+            await browser.storage.local.set({ masterPasswordEnabled: true });
+        }else{ // Masterpassword got deactivated
+
+            var password = await getSessionPassword();
+
+            await browser.storage.local.set({ masterPasswordEnabled: false });
+            
+            browser.storage.local.get("accounts").then(async accounts => {
+                if(accounts.accounts){
+                    var accs = await loadAccounts(password);
+                    await saveAccounts(accs, undefined);
+                }
+            });
+        }
+    }
+}

@@ -25,12 +25,15 @@ class Account {
 
 async function saveAccounts(accounts, password) {
   if(!password){
-    browser.storage.local.set({ accounts });
+    await browser.storage.local.set({ accounts });
     return;
   }
   
-  var encryptedAccounts = await encrypt(accounts, password);  
-  browser.storage.local.set({ accounts: encryptedAccounts });
+  accounts = JSON.stringify(accounts);
+
+  var encryptedAccounts = await encrypt(accounts, password);
+  
+  await browser.storage.local.set({ accounts: encryptedAccounts });
 }
 
 async function loadAccounts(password) {
@@ -39,12 +42,9 @@ async function loadAccounts(password) {
     return result.accounts || [];
     });
   }
-
   encAccounts = await browser.storage.local.get("accounts");
-
   if(!encAccounts.accounts){
     return [];
   }
-
-  return await decrypt(encAccounts.accounts || [], password);
+  return JSON.parse(await decrypt(encAccounts.accounts, password));
 }

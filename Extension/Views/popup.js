@@ -31,9 +31,9 @@ let accounts = [];
 let accountElements = new Map();
 let lastTimeSlot = [];
 let editingIndex = null;
-let unlockedPassword = null;
 var password;
 var showNextCode;
+let draggedElement = null;
 
 // ------------------ Button Event Listeners ------------------
 
@@ -223,14 +223,32 @@ function openEdit(index) {
   showAddView(index);
 }
 
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll(".account:not(.dragging)")];
+
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
 async function renderAccounts() {
+
   accountsDiv.innerHTML = "";
-  accountElements.clear();
-  lastTimeSlot = [];
+
   accountsDiv.addEventListener("dragover", (e) => {
     e.preventDefault();
-    const dragging = document.querySelector(".dragging");
+
     const afterElement = getDragAfterElement(accountsDiv, e.clientY);
+
+    const dragging = document.querySelector(".dragging");
+    if (!dragging) return;
 
     if (afterElement == null) {
       accountsDiv.appendChild(dragging);
@@ -239,25 +257,33 @@ async function renderAccounts() {
     }
   });
 
-  accountsDiv.addEventListener("drop", () => {
-    saveNewOrder();
-  });
-
   accountElements.clear();
+  lastTimeSlot = [];
+  lastTimeSlot = accounts.map(() => ({ current: null, next: null }));
 
   accounts.forEach((acc, index) => {
     const wrapper = document.createElement("div");
     wrapper.className = "account";
+    wrapper.dataset.index = index;
     wrapper.draggable = true;
-    wrapper.addEventListener("dragstart", (e) => {
-      e.dataTransfer.setData("text/plain", index);
+    wrapper.addEventListener("dragstart", () => {
+      draggedElement = wrapper;
       wrapper.classList.add("dragging");
     });
 
-    wrapper.addEventListener("dragend", () => {
+    wrapper.addEventListener("dragend", async () => {
       wrapper.classList.remove("dragging");
+      draggedElement = null;
+
+      // Reihenfolge neu berechnen
+      const newOrder = [...accountsDiv.querySelectorAll(".account")]
+        .map(el => accounts[Number(el.dataset.index)]);
+
+      accounts = newOrder;
+
+      await saveAccounts(accounts, password);
+      await renderAccounts();
     });
-    wrapper.dataset.index = index;
 
     const left = document.createElement("div");
     left.className = "account-left";
@@ -320,28 +346,13 @@ async function renderAccounts() {
       nextCode: ""
     });
 
-    if (!lastTimeSlot[index]) lastTimeSlot[index] = null;
   });
 
   await updateCodes(true);
 }
 
-function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll(".account:not(.dragging)")];
-
-  return draggableElements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child };
-    } else {
-      return closest;
-    }
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
 async function updateCodes() {
+
   const now = Math.floor(Date.now() / 1000);
 
   for (let [index, acc] of accounts.entries()) {
@@ -353,46 +364,39 @@ async function updateCodes() {
     const nextSlot = currentSlot + 1;
     const remaining = period - (now % period);
 
-    // --- Current Code nur neu berechnen, wenn Slot gewechselt ---
-    if (!lastTimeSlot[index]) lastTimeSlot[index] = {};
-    if (lastTimeSlot[index].current !== currentSlot) {
-      el.currentCode = await generateTOTP(acc.secret, acc.digits, period, acc.algorithm);
-      if (el.codeEl.textContent !== el.currentCode) el.codeEl.textContent = el.currentCode;
+    if(!lastTimeSlot[index]){ //First time calculating code
+      lastTimeSlot[index] = {current: null, next: null};
       lastTimeSlot[index].current = currentSlot;
-    }
-
-    // --- Next Code nur neu berechnen, wenn Slot für nächsten Code gewechselt ---
-    if (lastTimeSlot[index].next !== nextSlot) {
-      el.nextCode = await generateTOTP(acc.secret, acc.digits, period, acc.algorithm, 1);
       lastTimeSlot[index].next = nextSlot;
+      el.currentCode = await generateTOTP(acc.secret, acc.digits, period, acc.algorithm);
+      el.nextCode = await generateTOTP(acc.secret, acc.digits, period, acc.algorithm, 1);
+      el.codeEl.textContent = el.currentCode;
+      if(remaining <= 10 && showNextCode){
+        el.nextCodeEl.textContent = browser.i18n.getMessage("nextCodeText") + el.nextCode;
+      }
+    }else{ // Codes have been calculated before
+      if(lastTimeSlot[index].current !== currentSlot){ // Code ist veraltet
+        lastTimeSlot[index].current = currentSlot;
+        lastTimeSlot[index].next = nextSlot;
+        el.currentCode = await generateTOTP(acc.secret, acc.digits, period, acc.algorithm);
+        el.nextCode = await generateTOTP(acc.secret, acc.digits, period, acc.algorithm, 1);
+        el.codeEl.textContent = el.currentCode;
+        if(showNextCode){
+          el.nextCodeEl.textContent = remaining <= 10 ? browser.i18n.getMessage("nextCodeText") + el.nextCode : "";;
+        }
+      }else{ //Code ist noch aktuell
+
+        // Soll next code angezeigt werden?
+        const nextText = remaining <= 10 ? browser.i18n.getMessage("nextCodeText") + el.nextCode : "";
+        if ((el.nextCodeEl.textContent !== nextText) && showNextCode){
+          el.nextCodeEl.textContent = nextText;
+        } 
+      }
     }
-
-    // --- UI Update für Next Code nur wenn remaining <=10 ---
-    const nextText = remaining <= 10 ? browser.i18n.getMessage("nextCodeText") + el.nextCode : "";
-    if ((el.nextCodeEl.textContent !== nextText) && showNextCode){
-      el.nextCodeEl.textContent = nextText;
-    } 
-
-    // --- Timer immer aktualisieren ---
-    el.timerEl.textContent = remaining + browser.i18n.getMessage("timeTillNextCode");
+    
+    el.timerEl.textContent = remaining + browser.i18n.getMessage("timeTillNextCode"); // Timer immer aktualisieren
+    
   }
-}
-
-async function saveNewOrder() {
-  const newOrder = [];
-  const elements = accountsDiv.querySelectorAll(".account");
-
-  elements.forEach(el => {
-    const index = Number(el.dataset.index);
-    newOrder.push(accounts[index]);
-  });
-
-  accounts = newOrder;
-  await saveAccounts(accounts, password);
-
-  renderAccounts().then(() => {
-    updateCodes(true); // force=true
-  });
 }
 
 function saveUIState() {
@@ -448,17 +452,16 @@ document.querySelectorAll('[data-i18n]').forEach(el => {
 
 browser.storage.local.get(["uiState"]).then(async result => {
 
-  password = await getSessionPassword();
-
-  accounts = await loadAccounts(password);
-
   if(await isDarkMode()){
     document.body.classList.add("dark");   // Dark
   }
   showNextCode = await isShowNextCode();
 
-  renderAccounts();
-  restoreUIState(result.uiState);
-});
+  password = await getSessionPassword();
+  accounts = await loadAccounts(password);
 
-setInterval(updateCodes, 500);
+  await renderAccounts();
+  restoreUIState(result.uiState);
+
+  setInterval(updateCodes, 500);
+});

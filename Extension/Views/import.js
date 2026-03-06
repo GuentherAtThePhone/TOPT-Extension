@@ -165,7 +165,7 @@ fileInput.addEventListener('change', async (e) => {
       accounts.push(...accs);
       console.log('Imported accounts:', accs);
       await saveAccounts(accounts, password);
-      alert(browser.i18n.getMessage("importSuccessfullText").replace("{accs.lenght}", accs.length));
+      alert(browser.i18n.getMessage("importSuccessfullText").replace("\"{accs.length}\"", accs.length));
       window.close();
   }else{
   }
@@ -194,7 +194,7 @@ async function processQRCode(qrResult) {
       accounts.push(...accs);
       console.log('Imported accounts:', accs);
       await saveAccounts(accounts, password);
-      alert(browser.i18n.getMessage("importSuccessfullText").replace("{accs.lenght}", accs.length));
+      alert(browser.i18n.getMessage("importSuccessfullText").replace("\"{accs.length}\"", accs.length));
       window.close();
   }
 }

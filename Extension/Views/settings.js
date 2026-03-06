@@ -19,7 +19,7 @@ document.querySelectorAll('[data-i18n]').forEach(el => {
 
 changePwBtn.addEventListener('click', async () => {
     var oldPW = getSessionPassword();
-    var newPW = prompt("Enter new Password");
+    var newPW = prompt(browser.i18n.getMessage('enterNewPasswordText'));
     await changePassword(oldPW, newPW);
 });
 
@@ -81,7 +81,7 @@ async function saveSettings(){
         if(settings.masterPasswordEnabled && !result.masterPasswordEnabled){ // Masterpassword got  activated
             var password;
             do{
-                password = prompt("Enter new Master Password");
+                password = prompt(browser.i18n.getMessage('enterNewPasswordText'));
             } while (!password);
             await changePassword(undefined, password);
             await browser.storage.local.set({ masterPasswordEnabled: true });

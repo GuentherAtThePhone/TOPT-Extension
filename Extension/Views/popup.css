@@ -8,7 +8,6 @@
   --radius: 12px;
 }
 
-
 body.dark {
   --bg: #0f172a;
   --card: #1e293b;
@@ -17,7 +16,6 @@ body.dark {
   --accent-hover: #2563eb;
   --border: #334155;
 }
-
 
 /* Layout */
 body {
@@ -34,7 +32,6 @@ body {
 #accountsView {
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 /* Account Card */
@@ -42,13 +39,14 @@ body {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px;
+  padding: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
   cursor: grab;
   transition: 0.2s ease;
+  margin-bottom: 8px;
 }
 
 .account:hover {
@@ -64,14 +62,14 @@ body {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .account-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0px;
 }
 
 .account-right {

@@ -140,5 +140,8 @@
   },
   "saveBtnText":{
     "message": "Save"
+  },
+  "enterNewPasswordText":{
+    "message" : "Enter new Password"
   }
 }

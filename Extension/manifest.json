@@ -5,7 +5,12 @@
   "description": "Multi-account offline TOTP generator",
   "default_locale": "en",
   "action": {
-    "default_popup": "Views/popup.html"
+    "default_popup": "Views/popup.html",
+    "default_icon": {
+      "32": "icons/icon_32.png",
+      "64": "icons/icon_64.png",
+      "96": "icons/icon_96.png"
+    }
   },
   "permissions": [
     "storage"
@@ -18,5 +23,11 @@
         ]
       }
     }
-  }  
+  },
+  "icons": {
+    "32": "icons/icon_32.png",
+    "48": "icons/icon_48.png",
+    "64": "icons/icon_64.png",
+    "96": "icons/icon_96.png"
+  }
 }

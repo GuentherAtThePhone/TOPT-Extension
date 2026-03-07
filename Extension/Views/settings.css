@@ -39,8 +39,40 @@ body {
     background: var(--bg);
     color: var(--text);
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 40px 20px;
+}
+
+.below-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    justify-content: center;
+    font-size: var(--smallText);
+    opacity: 0.8;
+}
+
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+
+.popup {
+    background: var(--card);
+    padding: 25px;
+    border-radius: var(--radius);
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .container {

@@ -125,7 +125,6 @@ async function isMasterPassword(password) {
     var decryptedCheckText;
     try{
       decryptedCheckText = await decrypt(input.masterPassword, password);
-      console.log("Decrypted check text", decryptedCheckText);
     } catch{
       console.log("Decryption failed");
       return false;
@@ -157,7 +156,7 @@ async function getSessionPassword(){
     }
   }
 
-  console.log("initialized");
+  console.log("already initialized");
 
   var masterPWEnabled = await browser.storage.local.get("masterPasswordEnabled");
 
@@ -173,7 +172,6 @@ async function getSessionPassword(){
     console.log("not authenticated yet");
     do{
       password = await setPassword();
-      console.log("Password entered", password);
     } while (!await isMasterPassword(password))
 
     browser.storage.session.set({ isAuthenticated: true });
@@ -186,7 +184,6 @@ async function getSessionPassword(){
 
   // Is initialized and master password is enabled and already authenticated
 
-  console.log("already authenticated", await browser.storage.session.get("sessionPassword"));
   password = await browser.storage.session.get("sessionPassword");
 
   return password.sessionPassword;

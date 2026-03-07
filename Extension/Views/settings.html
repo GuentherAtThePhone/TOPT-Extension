@@ -9,8 +9,6 @@
     <div class="container">
       <h1 data-i18n="settingsText"></h1>
 
-      <h2 style="color: red;">THIS PAGE IS JUST FOR TESTING! CHANGES MADE HERE HAVE NO EFFECT!</h2>
-
       <h2 data-i18n="apperanceText"></h2>
 
       <div class="setting">
@@ -22,7 +20,7 @@
         </select>
       </div>
 
-      <div class="setting">
+      <div class="setting" style="display: none;">
         <label data-i18n="syncWithMozillaText"></label>
         <select id="syncMozillaSelect">
           <option data-i18n="yes" value="true"></option>
@@ -57,7 +55,7 @@
         </select>
       </div>
 
-      <div class="setting">
+      <div class="setting" style="display: none;">
         <label data-i18n="useBiometricsText"></label>
         <select id="useBiometricsSelect">
           <option data-i18n="yes" value="true"></option>
@@ -68,6 +66,25 @@
       <div class="button-group">
         <button id="changePwBtn" data-i18n="changePasswordText" class="secondary"></button>
         <button id="saveBtn" data-i18n="saveBtnText" class="primary"></button>
+      </div>
+    </div>
+
+    <div class="below-container">
+      <span style="text-align: center;">Version 1.0</span>
+      <span style="text-align: center;"> | </span>
+      <a href="#" id="openPopup" style="text-align: center; vertical-align: middle;">Libraries</a>
+    </div>
+
+    <div id="popupOverlay" class="popup-overlay">
+      <div class="popup">
+        <h2>Libraries</h2>
+        <h3>jsQR</h3>
+        <div style="display: flex; flex-direction: column;">
+          <span>developer: cozmo</span>
+          <a href="https://github.com/cozmo/jsQR">project repository</a>
+          <a href="https://www.apache.org/licenses/LICENSE-2.0.txt">Apache License Version 2.0</a>
+        </div>
+        <button style="margin-top: 10px;" id="closePopup">Schließen</button>
       </div>
     </div>
 

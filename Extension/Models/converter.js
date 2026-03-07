@@ -1,16 +1,13 @@
 async function parse2fas(str) {
-  console.log('Parsing 2FAS data...');
   const parsed = JSON.parse(str);
   var accs = parsed.services;
 
   if(!accs.length){
-    const password = window.prompt("Bitte Passwort für 2FAS Backup eingeben:");
+    const password = window.prompt("Enter Password of 2FAS backup:");
     accs = await decryptEncrypted2fas(parsed.servicesEncrypted, password);
   }
 
   var accounts = [];
-
-  console.log('Parsed accounts from 2FAS file:', accs);
 
   accs.forEach(a => {
     var acc = new Account(
@@ -51,11 +48,6 @@ async function decryptEncrypted2fas(str, password) {
       const authTagBytes = cipherWithTagBytes.slice(-tagLength);
       const cipherBytes   = cipherWithTagBytes.slice(0, cipherWithTagBytes.length - tagLength);
 
-      console.log("Salt:", saltBytes.length, saltBytes);
-      console.log("IV:", ivBytes.length, ivBytes);
-      console.log("Ciphertext:", cipherBytes.length);
-      console.log("AuthTag:", authTagBytes.length);
-
       // PBKDF2 Key
       const passwordKey = await crypto.subtle.importKey(
           "raw",
@@ -85,18 +77,11 @@ async function decryptEncrypted2fas(str, password) {
       );
 
       const decodedText = new TextDecoder().decode(decrypted);
-      console.log("=== DECRYPTED SERVICES ===");
       console.log(decodedText);
       return JSON.parse(decodedText);
 
   } catch(err) {
       console.error(err);
-      console.log(
-          "Entschlüsselung fehlgeschlagen.\n"+
-          "→ Passwort falsch ODER Layout abweichend.\n\n"+
-          err.message+"\n\n"+
-          "DEBUG: Erster Teil von servicesEncrypted:\n"+
-          (json && json.servicesEncrypted ? json.servicesEncrypted.slice(0,50) : ''));
   }
 }
 
@@ -105,12 +90,12 @@ function parseJson(str) {
     const importedAccounts = JSON.parse(str);
 
     if (!Array.isArray(importedAccounts)) {
-      throw new Error("Ungültiges Format: JSON muss ein Array enthalten.");
+      throw new Error("wrong format: JSONhas to contain an array.");
     }
 
     return importedAccounts;
   } catch (err) {
-    console.error("Fehler beim Importieren der Accounts:", err);
+    console.error("error importing accounts:", err);
   }
 }
 
@@ -118,7 +103,7 @@ function parseGoogleAuth(str) {
     try{
         const u = new URL(str);
         const b64 = u.searchParams.get('data');
-        if (!b64) throw new Error('Keine Daten im Migration-QR');
+        if (!b64) throw new Error('No data in migration qr-code');
 
         const uris = parseOtpauthMigration(b64);
         if (!uris || !uris.length) throw new Error('Keine Accounts in Migration-Daten gefunden');
@@ -126,7 +111,7 @@ function parseGoogleAuth(str) {
         return uris; // [] if no acconts found, array of Account objects if found
 
     } catch (e) {
-        console.error('Fehler beim Parsen der Google Authenticator Migration-Daten:', e);
+        console.error('error parsing google auth migration data:', e);
         return null;
     }
 }
@@ -161,8 +146,6 @@ async function parseOtpauth(uri) {
             type === 'hotp' ? Number(params.counter) || 0 : undefined, 
             Number(params.period || params.interval) || (type === 'hotp' ? 0 : 30)
         );
-
-        console.log('Parsed account from otpauth URI:', acc);
 
         return acc;
     } catch (e) {

@@ -165,20 +165,6 @@ button:hover {
   background: var(--accent-hover);
 }
 
-/* Settings Button (oben rechts Zahnrad z.B.) */
-#settingsBtn {
-  width: auto;
-  align-self: flex-end;
-  margin-top: 0;
-  padding: 4px 8px;
-  font-weight: 600;
-  font-size: 22px;
-  cursor: pointer;
-  border: none;
-  background: none;
-  color: var(--text);
-  transition: 0.2s ease;
-}
 
 #settingsBtn:hover {
   color: var(--accent);
@@ -228,4 +214,24 @@ body.dark #settingsBtn {
 
 body.dark #settingsBtn:hover {
   color: var(--accent);
+}
+
+#accountsHeader{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#settingsBtn {
+  width: fit-content;
+  margin: 0;
+  padding: 4px 8px;
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
 }

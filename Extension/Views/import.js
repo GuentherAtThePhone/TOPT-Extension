@@ -124,7 +124,6 @@ uploadBtn.addEventListener('click', () => fileInput.click());
 
 fileInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
-    console.log('Selected file for import:', file);
     if (!file) return;
     var accs;
     var qrResult;
@@ -138,7 +137,6 @@ fileInput.addEventListener('change', async (e) => {
               console.log('Parsed accounts from 2FAS file:', accs);
             }
         }else{
-          console.log('Parsing picture:', file.name);
             // Scann QR code from image and parse to Account object
             try {
               qrResult = await new Promise((resolve, reject) => {
@@ -166,17 +164,15 @@ fileInput.addEventListener('change', async (e) => {
               processQRCode(qrResult);
 
             } catch (err) {
-              console.error('Fehler beim Verarbeiten des Bildes:', err);
+              console.error('Error parsing the picture:', err);
             }
         }
   }catch(err){
-      console.error('Import Fehler:', err);
+      console.error('Error importing:', err);
       alert(browser.i18n.getMessage("importFailedText") + err.message);
   }
   if(accs && accs.length && qrResult === undefined){
-      console.log('Importing accounts:', accs);
       accounts.push(...accs);
-      console.log('Imported accounts:', accs);
       await saveAccounts(accounts, password);
       alert(browser.i18n.getMessage("importSuccessfullText").replace("\"{accs.length}\"", accs.length));
       window.close();
@@ -187,7 +183,6 @@ fileInput.addEventListener('change', async (e) => {
 
 async function processQRCode(qrResult) {
   var accs;
-  console.log('QR code data:', qrResult);
   if(qrResult.startsWith('otpauth://')){
     console.log('Parsing otpauth URI from QR code:', qrResult);
     accs = [];
@@ -197,15 +192,14 @@ async function processQRCode(qrResult) {
   else if(qrResult.startsWith('otpauth-migration://')){
     console.log('Parsing Google Authenticator Migration QR code:', qrResult);
     accs = parseGoogleAuth(qrResult);
+    console.log('Parsed account from Google Authenticator Migration URI:', accs);
   }
   else{
     console.log('QR code does not contain valid content', qrResult);
   }
 
   if(accs && accs.length){
-      console.log('Importing accounts:', accs);
       accounts.push(...accs);
-      console.log('Imported accounts:', accs);
       await saveAccounts(accounts, password);
       alert(browser.i18n.getMessage("importSuccessfullText").replace("\"{accs.length}\"", accs.length));
       window.close();

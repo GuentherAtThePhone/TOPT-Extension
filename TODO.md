@@ -17,9 +17,9 @@
 - [x] implement option to disable displaying the next code
 - [x] improvements to the ui for a more universal and modern look
 - [x] implement different font sizes
-- [ ] Implement tests to existing codebase
-- [ ] remove current console debugging
-- [ ] add logo to extension
+- [x] remove unneccesary console debugging
+- [x] add logo to extension
+- [ ] improve safety
 
 ## TODO for Release (Q2 2026)
 
@@ -29,3 +29,4 @@
 - [ ] Opera support
 - [ ] implement syncing the accounts via a Mozilla Account
 - [ ] implement authentication with biometics
+- [ ] implement tests

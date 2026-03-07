@@ -13,7 +13,7 @@ If you want to contribute to this repository, please follow these guidelines:
 1. Create an Issue with a description of your new feature / bugfix and tell us all about it
 2. Create a new branch with the name: "IssueNumber - Issue Title"
 3. Make shure to implement your Issue within this branch.
-4. Make shure all the tests run successfully
+4. Make shure not just your fix/change but also everything else still works
 5. Create a pull request and tell us what you´ve done. Make shure to answer any occuring questions within a reasonable time.
 
 ### Notes:

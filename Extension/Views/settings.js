@@ -10,6 +10,24 @@ const changePwBtn = document.getElementById("changePwBtn");
 
 var useMasterPasswordChanged = false;
 
+const popup = document.getElementById("popupOverlay");
+const openBtn = document.getElementById("openPopup");
+const closeBtn = document.getElementById("closePopup");
+
+openBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  popup.style.display = "flex";
+});
+
+closeBtn.addEventListener("click", () => {
+  popup.style.display = "none";
+});
+popup.addEventListener("click", (e) => {
+  if (e.target === popup) {
+    popup.style.display = "none";
+  }
+});
+
 saveBtn.addEventListener('click', saveSettings);
 
 document.querySelectorAll('[data-i18n]').forEach(el => {

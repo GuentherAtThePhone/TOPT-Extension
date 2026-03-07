@@ -164,7 +164,7 @@ async function setPassword() {
 
   await waitForButtonClick(passwordSetBtn, passwordInput);
   
-  accountsView.style.display = "block";
+  accountsView.style.display = "flex";
   addAccountView.style.display = "none";
   manualEntryView.style.display = "none";
   passwordEntryView.style.display = "none";
@@ -213,7 +213,7 @@ function showAddView(editIndex = null) {
 function showAccountsView() {
   editingIndex = null;
   addAccountView.style.display = "none";
-  accountsView.style.display = "block";
+  accountsView.style.display = "flex";
   manualEntryView.style.display = "none";
   passwordEntryView.style.display = "none";
   saveUIState();
@@ -416,7 +416,7 @@ function saveUIState() {
       : null
   };
 
-  browser.storage.local.set({ uiState: state });
+  browser.storage.session.set({ uiState: state });
 }
 
 function restoreUIState(state) {
@@ -436,7 +436,6 @@ function restoreUIState(state) {
   }
 }
 
-
 // ------------------ Run At Start ------------------
 
 [nameInput, secretInput, digitsInput, algorithmInput, periodInput]
@@ -450,7 +449,7 @@ document.querySelectorAll('[data-i18n]').forEach(el => {
   el.textContent = browser.i18n.getMessage(key);
 });
 
-browser.storage.local.get(["uiState"]).then(async result => {
+browser.storage.session.get(["uiState"]).then(async result => {
 
   if(await isDarkMode()){
     document.body.classList.add("dark");   // Dark

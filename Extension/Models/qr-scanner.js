@@ -82,9 +82,9 @@ function processImageForQR(img) {
     if (found && found.data) {
       return found.data;
     } else {
-      console.error('Kein QR-Code in diesem Bild gefunden');
+      console.error('no qr-code found in picture');
     }
   } catch (err) {
-    console.error('Fehler beim Verarbeiten des Bildes: ' + err.message);
+    console.error(err.message);
   }
 }

@@ -18,6 +18,19 @@ window.onload = async () => {
     document.body.classList.add("dark");   // Dark
   }
 
+  switch (await getFontSize()){
+    case "small":
+      document.body.classList.add("small");
+      break;
+    case "medium":
+      break;
+    case "large":
+      document.body.classList.add("large");
+      break;
+    default:
+      break;
+  }
+  
   password = await getSessionPassword();
 
   accounts = await loadAccounts(password);

@@ -45,6 +45,19 @@ browser.storage.local.get("settings").then(async result => {
         document.body.classList.add("dark");   // Dark
     }
 
+    switch (await getFontSize()){
+        case "small":
+        document.body.classList.add("small");
+        break;
+        case "medium":
+        break;
+        case "large":
+        document.body.classList.add("large");
+        break;
+        default:
+        break;
+    }
+
     if(!settings.masterPasswordEnabled){
         changePwBtn.style.display = "none";
     }
@@ -74,6 +87,21 @@ async function saveSettings(){
         document.body.classList.add("dark");   // Dark
     } else{
         document.body.classList.remove("dark");
+    }
+
+    switch (settings.fontSize){
+        case "small":
+        document.body.classList.add("small");
+        break;
+        case "medium":
+            document.body.classList.remove("small");
+            document.body.classList.remove("large");
+        break;
+        case "large":
+        document.body.classList.add("large");
+        break;
+        default:
+        break;
     }
 
     if(useMasterPasswordChanged){

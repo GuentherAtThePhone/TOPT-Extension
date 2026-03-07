@@ -52,3 +52,11 @@ async function isShowNextCode(){
 
     return result.settings.nextCode;
 }
+
+async function getFontSize(){
+    var result = await browser.storage.local.get("settings");
+    if(!result.settings)
+        return "medium";
+
+    return result.settings.fontSize;
+}

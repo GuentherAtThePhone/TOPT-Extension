@@ -5,6 +5,10 @@
     --accent: #2563eb;
     --border: #e2e8f0;
     --radius: 12px;
+    --smallText:14px;
+    --mediumText:16px;
+    --largeText:18px;
+    --xLargeText: 24px;
 }
 
 body.dark {
@@ -13,6 +17,20 @@ body.dark {
     --text: #e2e8f0;         /* Haupttext */
     --accent: #3b82f6;       /* Akzent etwas heller */
     --border: #334155;       /* dezente Borders */
+}
+
+body.small {
+    --smallText:12px;
+    --mediumText:14px;
+    --largeText:16px;
+    --xLargeText: 22px;
+}
+
+body.large{
+    --smallText:16px;
+    --mediumText:18px;
+    --largeText:20px;
+    --xLargeText: 26px;
 }
 
 body {
@@ -36,13 +54,13 @@ body {
 
 h1 {
     margin-top: 0;
-    font-size: 24px;
+    font-size: var(--xLargeText);
     margin-bottom: 25px;
 }
 
 h2 {
     margin-top: 35px;
-    font-size: 18px;
+    font-size: var(--largeText);
     border-bottom: 1px solid var(--border);
     padding-bottom: 8px;
 }
@@ -64,7 +82,7 @@ select {
     border-radius: 8px;
     border: 1px solid var(--border);
     background: #f9fafb;
-    font-size: 14px;
+    font-size: var(--smallText);
     cursor: pointer;
     transition: 0.2s ease;
 }
@@ -80,6 +98,11 @@ button {
     cursor: pointer;
     font-weight: 500;
     transition: 0.2s ease;
+    font-size: var(--smallText);
+}
+
+label {
+    font-size: var(--mediumText);
 }
 
 .primary {

@@ -455,6 +455,20 @@ browser.storage.local.get(["uiState"]).then(async result => {
   if(await isDarkMode()){
     document.body.classList.add("dark");   // Dark
   }
+
+  switch (await getFontSize()){
+    case "small":
+      document.body.classList.add("small");
+      break;
+    case "medium":
+      break;
+    case "large":
+      document.body.classList.add("large");
+      break;
+    default:
+      break;
+  }
+
   showNextCode = await isShowNextCode();
 
   password = await getSessionPassword();

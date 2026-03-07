@@ -6,6 +6,11 @@
   --accent-hover: #1d4ed8;
   --border: #e2e8f0;
   --radius: 12px;
+
+  --smallText:12px;
+  --mediumText:14px;
+  --largeText:18px;
+  --xLargeText: 20px;
 }
 
 body.dark {
@@ -15,6 +20,20 @@ body.dark {
   --accent: #3b82f6;
   --accent-hover: #2563eb;
   --border: #334155;
+}
+
+body.small {
+  --smallText:10px;
+  --mediumText:12px;
+  --largeText:16px;
+  --xLargeText: 18px;
+}
+
+body.large{
+  --smallText:14px;
+  --mediumText:16px;
+  --largeText:20px;
+  --xLargeText: 22px;
 }
 
 /* Layout */
@@ -80,28 +99,28 @@ body {
 /* Text Styles */
 .name {
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--mediumText);
 }
 
 .label {
-  font-size: 12px;
+  font-size: var(--smallText);
   color: #64748b;
 }
 
 .code {
-  font-size: 20px;
+  font-size: var(--xLargeText);
   font-weight: 600;
   letter-spacing: 1px;
   cursor: pointer;
 }
 
 .next-code {
-  font-size: 13px;
+  font-size: var(--smallText);
   color: #64748b;
 }
 
 .timer {
-  font-size: 12px;
+  font-size: var(--smallText);
   color: #94a3b8;
 }
 
@@ -109,7 +128,7 @@ body {
 .edit-btn {
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: var(--largeText);
   cursor: pointer;
   color: var(--text);
   transition: 0.2s ease;
@@ -129,7 +148,7 @@ select {
   border-radius: 8px;
   border: 1px solid var(--border);
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: var(--mediumText);
 }
 
 /* Primary Buttons */

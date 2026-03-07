@@ -6,6 +6,9 @@
   --accent-hover: #1d4ed8;
   --border: #e2e8f0;
   --radius: 12px;
+  --smallText:13px;
+  --mediumText:14px;
+  --largeText:22px;
 }
 
 body.dark {
@@ -15,6 +18,18 @@ body.dark {
   --accent: #3b82f6;
   --accent-hover: #2563eb;
   --border: #334155;
+}
+
+body.small {
+  --smallText:11px;
+  --mediumText:12px;
+  --largeText:20px;
+}
+
+body.large{
+  --smallText:15px;
+  --mediumText:16px;
+  --largeText:24px;
 }
 
 /* Layout wie Settings */
@@ -40,7 +55,12 @@ body {
 h1 {
   margin-top: 0;
   text-align: center;
-  font-size: 22px;
+  font-size: var(--largeText);
+  margin-bottom: 25px;
+}
+
+h2 {
+  margin-top: 35px;
   margin-bottom: 25px;
 }
 
@@ -59,7 +79,7 @@ h1 {
   background: #f9fafb;
   color: var(--text);
   cursor: pointer;
-  font-size: 14px;
+  font-size: var(--mediumText);
   transition: 0.2s ease;
 }
 
@@ -105,7 +125,7 @@ button {
   border: none;
   cursor: pointer;
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--mediumText);
   background: var(--accent);
   color: white;
   transition: 0.2s ease;
@@ -126,7 +146,7 @@ button:disabled {
   padding: 12px;
   border-radius: 10px;
   display: none;
-  font-size: 14px;
+  font-size: var(--mediumText);
 }
 
 .result.success {
@@ -149,7 +169,11 @@ button:disabled {
   padding: 10px;
   text-align: center;
   color: #64748b;
-  font-size: 13px;
+  font-size: var(--smallText);
+}
+
+p {
+  font-size: var(--mediumText);
 }
 
 /* Versteckte Elemente */

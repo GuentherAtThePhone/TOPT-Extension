@@ -31,7 +31,7 @@ async function saveAccounts(accounts, password) {
   
   accounts = JSON.stringify(accounts);
 
-  var encryptedAccounts = await encrypt(accounts, password);
+  var encryptedAccounts = await encrypt(accounts, password.hash);
   
   await browser.storage.local.set({ accounts: encryptedAccounts });
 }
@@ -46,5 +46,5 @@ async function loadAccounts(password) {
   if(!encAccounts.accounts){
     return [];
   }
-  return JSON.parse(await decrypt(encAccounts.accounts, password));
+  return JSON.parse(await decrypt(encAccounts.accounts, password.hash));
 }

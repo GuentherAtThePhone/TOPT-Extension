@@ -19,7 +19,7 @@
 - [x] implement different font sizes
 - [x] remove unneccesary console debugging
 - [x] add logo to extension
-- [ ] improve safety
+- [x] improve safety
 
 ## TODO for Release (Q2 2026)
 

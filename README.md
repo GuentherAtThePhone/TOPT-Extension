@@ -21,6 +21,14 @@ The extension provides the ability to generate TOTP´s within Firefox. No need f
 
 To run the extension during development, make shure to first clone the repository. Ten, in Firefox, go to: about:debugging - This Firefox - load temporary add-on - select `Extension/manifest.json`
 
-## Note
+## License
 
-This extension is still under development.
+The name "TOTP-Authenticator" and the project logo are property of the original author.
+
+You may use, modify, and distribute the source code of this project under the MIT License.
+
+However:
+
+- You may not distribute modified versions using the original project name.
+- You may not use the official logo without permission.
+- Any redistribution must include attribution to the original project and author.

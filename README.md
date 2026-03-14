@@ -1,18 +1,17 @@
 # README
 
-#### This extention is still in alpha develepment!
-
 This project provides a browser extension to generate TOTP´s with.
 This extension is currently only developed for Firefox Desktop, but more Browser will be supported soon.
 
 This extension is local first. All the secrets are stored local and all the calculation of the codes is local as well.
+Scanning and processing QR-Codes happens all local on your machine.
 No data leaves your machine unless you opt-in to syncing it with your firefox-account. (Syncing with firefox account comming soon)
 No telemetry data is collect as well. All the magic happens right where you want it to happen.
 
 ## Installation
 
-The extention can be installed through addons.mozilla.org (https://website.com) (comming soon)
-Chrome Support: Comming Soon (q1 2026)
+The extention can be installed through addons.mozilla.org (https://addons.mozilla.org/de/firefox/addon/2fa-authenticator/)
+Chrome Support: Comming Soon (q2 2026)
 
 ## Usage
 
@@ -24,5 +23,4 @@ To run the extension during development, make shure to first clone the repositor
 
 ## Note
 
-This extension is still under development. It is not yet ready to go into production.
-I am quite aware that it might not be safe to use from a security perspective at the moment. 
+This extension is still under development.

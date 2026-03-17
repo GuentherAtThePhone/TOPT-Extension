@@ -1,6 +1,6 @@
 ## TODO (Q2 2026)
 
-- [ ] Chrome support
+- [x] Chrome support
 - [ ] Edge support
 - [ ] Firefox Android Browser support
 - [ ] Opera support

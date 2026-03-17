@@ -23,7 +23,7 @@ To run the extension during development, make shure to first clone the repositor
 
 ## License
 
-The name "TOTP-Authenticator" and the project logo are property of the original author.
+The name "TOTP Authenticator" and the project logo are property of the original author.
 
 You may use, modify, and distribute the source code of this project under the MIT License.
 

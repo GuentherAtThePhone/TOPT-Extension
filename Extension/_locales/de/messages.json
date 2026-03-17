@@ -143,5 +143,8 @@
   },
   "enterNewPasswordText":{
     "message" : "Neues Passwort Eingeben"
+  },
+  "resetAddonBtnText":{
+    "message" : "Addon zurücksetzen"
   }
 }

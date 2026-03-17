@@ -7,6 +7,7 @@ const useBiometricsSelect = document.getElementById("useBiometricsSelect");
 
 const saveBtn = document.getElementById("saveBtn");
 const changePwBtn = document.getElementById("changePwBtn");
+const resetAddonBtn = document.getElementById("resetAddonBtn");
 
 var useMasterPasswordChanged = false;
 
@@ -26,6 +27,12 @@ popup.addEventListener("click", (e) => {
   if (e.target === popup) {
     popup.style.display = "none";
   }
+});
+
+resetAddonBtn.addEventListener("click", async () => {
+    await saveAccounts([], await getSessionPassword()); // Reset saved Accounts
+    await createDefaultSettings();
+    window.close();
 });
 
 saveBtn.addEventListener('click', saveSettings);

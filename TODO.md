@@ -3,7 +3,12 @@
 - [x] Chrome support
 - [x] Edge support
 - [ ] Firefox Android Browser support
-- [ ] Opera support
-- [ ] implement syncing the accounts via a Mozilla Account
+- [x] Opera support
+- [ ] implement syncing the accounts via a Mozilla Account for Firefox Browser
+
+## Roadmap:
+
+- [ ] implement HOTP-Support
+- [ ] allow imports from more apps / formats
 - [ ] implement authentication with biometics
 - [ ] implement tests

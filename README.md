@@ -1,7 +1,6 @@
 # README
 
 This project provides a browser extension to generate TOTP´s with.
-This extension is currently only developed for Firefox Desktop, but more Browser will be supported soon.
 
 This extension is local first. All the secrets are stored local and all the calculation of the codes is local as well.
 Scanning and processing QR-Codes happens all local on your machine.
@@ -10,11 +9,12 @@ No telemetry data is collect as well. All the magic happens right where you want
 
 ## Installation
 
-Firefox: The extention can be installed via addons.mozilla.org (https://addons.mozilla.org/de/firefox/addon/2fa-authenticator/)
-
-Chrome / Edge:  The Extension can be installed via chrome web store (https://chromewebstore.google.com/detail/totp-authenticator/aipfbkoohmnbdpbmnpikfohkgmmpmghk)
-
-Opera: Comming Q2-2026
+| Browser   | Install from ... | Notes |
+| :-------: | ---------------- | ------ |
+| <img src="https://github.com/user-attachments/assets/b0136512-56a5-4856-8c50-4971c957a24f" alt="Get for Firefox"> | <a href="https://addons.mozilla.org/de/firefox/addon/2fa-authenticator/">Firefox Add-ons</a> | Currently only available for Firefox Desktop |
+| <img src="https://github.com/user-attachments/assets/5463ef88-873b-4516-8514-5277664cfde7" alt="Get for Chrome"> | <a href="https://chromewebstore.google.com/detail/totp-authenticator/aipfbkoohmnbdpbmnpikfohkgmmpmghk">Chrome Web Store</a> | Should work for all Chromium based browser |
+| <img src="https://github.com/user-attachments/assets/3a7569f8-688b-4eb1-a643-8d0fe173aefe" alt="Get for Microsoft Edge"> | <a href="https://chromewebstore.google.com/detail/totp-authenticator/aipfbkoohmnbdpbmnpikfohkgmmpmghk">Chrome Web Store</a> | Available through Chrome Web Store |
+| <img src="https://github.com/user-attachments/assets/938f080c-fe64-4e48-8b89-4bfceabb56e6" alt="Get for Opera"> | <a href="https://chromewebstore.google.com/detail/totp-authenticator/aipfbkoohmnbdpbmnpikfohkgmmpmghk">Chrome Web Store</a> | Available through Chrome Web Store |
 
 ## Usage
 

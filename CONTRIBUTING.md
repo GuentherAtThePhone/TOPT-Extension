@@ -11,11 +11,8 @@ Make shure to also take a look at [TODO.md](/TODO.md).
 If you want to contribute to this repository, please follow these guidelines:
 
 1. Create an Issue with a description of your new feature / bugfix and tell us all about it
-2. Create a new branch with the name: "IssueNumber - Issue Title"
-3. Make shure to implement your Issue within this branch.
-4. Make shure not just your fix/change but also everything else still works
-5. Create a pull request and tell us what you´ve done. Make shure to answer any occuring questions within a reasonable time.
+2. Make shure not just your fix/change but also everything else still works
+3. Create a pull request and tell us what you´ve done. Make shure to answer any occuring questions within a reasonable time.
 
 ### Notes:
-* If a branch has not been committed to within the last 2 months, it can be deleted by the maintainer of this repository.
-* If you use inappropriate words in your Issue and/or your branch, the maintainer holds the right to delete the branch and/or Issue.
+* If you use inappropriate words in your Issue, the maintainer holds the right to close the Issue.

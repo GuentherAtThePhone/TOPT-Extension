@@ -10,12 +10,10 @@ No telemetry data is collect as well. All the magic happens right where you want
 
 ## Installation
 
-Firefox: The extention can be installed through addons.mozilla.org (https://addons.mozilla.org/de/firefox/addon/2fa-authenticator/)
+Firefox: The extention can be installed via addons.mozilla.org (https://addons.mozilla.org/de/firefox/addon/2fa-authenticator/)
 
-Chrome: Chrome is currently only supported by adding the addon manually. Note that you wont receive any updates. The addon will be added to the chrome web store in Q2-2026. This will solve the problem with getting updates.
-Download the repo. Then go to chrome - chrome://extensions/ - enable "Developer mode" - Load Unpacked - Select the "Extension" folder
+Chrome / Edge:  The Extension can be installed via chrome web store (https://chromewebstore.google.com/detail/totp-authenticator/aipfbkoohmnbdpbmnpikfohkgmmpmghk)
 
-Edge: Comming Q2-2026
 Opera: Comming Q2-2026
 
 ## Usage

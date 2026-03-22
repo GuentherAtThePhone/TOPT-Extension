@@ -16,6 +16,8 @@ const toggleSecretBtn = document.getElementById("toggleSecret");
 const digitsInput = document.getElementById("digitsInput");
 const algorithmInput = document.getElementById("algorithmInput");
 const periodInput = document.getElementById("periodInput");
+const algorithmView = document.getElementById("algorithmView");
+const periodView = document.getElementById("periodView");
 
 const saveAccountBtn = document.getElementById("saveAccount");
 const cancelAddBtn = document.getElementById("cancelAdd");
@@ -185,9 +187,17 @@ function showAddView(editIndex = null) {
   addAccountView.style.display = "none";
   passwordEntryView.style.display = "none";
   manualEntryView.style.display = "block";
+  algorithmView.style.display = "block";
+  periodView.style.display = "block";
 
   if (editIndex !== null) {
     const acc = accounts[editIndex];
+
+    if(acc.type === "HOTP"){
+      algorithmView.style.display = "none";
+      periodView.style.display = "none";
+    }
+
     nameInput.value = acc.name;
     secretInput.value = acc.secret;
     digitsInput.value = acc.digits;
@@ -331,6 +341,19 @@ async function renderAccounts() {
 
     left.appendChild(content);
 
+    if(acc.type === "HOTP"){
+      const nextCounterBtn = document.createElement("button");
+      nextCounterBtn.className = "edit-btn";
+      nextCounterBtn.textContent = "⟳";
+
+      nextCounterBtn.addEventListener("click", async () => {
+        acc.counter++;
+        await saveAccounts(accounts, password);
+      });
+
+      right.appendChild(nextCounterBtn);
+    }
+
     right.appendChild(editBtn);
 
     wrapper.appendChild(left);
@@ -359,12 +382,20 @@ async function updateCodes() {
     const el = accountElements.get(index);
     if (!el) continue;
 
+    if(acc.type === "HOTP"){
+      const hotpCode = await generateHOTP(acc.secret, acc.counter, acc.digits);
+      if(el.codeEl.textContent !== hotpCode){
+        el.codeEl.textContent = hotpCode;
+      }
+      continue;
+    }
+
     const period = Number(acc.period) || 30;
     const currentSlot = Math.floor(now / period);
     const nextSlot = currentSlot + 1;
     const remaining = period - (now % period);
 
-    if(!lastTimeSlot[index]){ //First time calculating code
+    if(!lastTimeSlot[index]){
       lastTimeSlot[index] = {current: null, next: null};
       lastTimeSlot[index].current = currentSlot;
       lastTimeSlot[index].next = nextSlot;
@@ -374,8 +405,8 @@ async function updateCodes() {
       if(remaining <= 10 && showNextCode){
         el.nextCodeEl.textContent = browser.i18n.getMessage("nextCodeText") + el.nextCode;
       }
-    }else{ // Codes have been calculated before
-      if(lastTimeSlot[index].current !== currentSlot){ // Code ist veraltet
+    }else{
+      if(lastTimeSlot[index].current !== currentSlot){
         lastTimeSlot[index].current = currentSlot;
         lastTimeSlot[index].next = nextSlot;
         el.currentCode = await generateTOTP(acc.secret, acc.digits, period, acc.algorithm);
@@ -384,9 +415,8 @@ async function updateCodes() {
         if(showNextCode){
           el.nextCodeEl.textContent = remaining <= 10 ? browser.i18n.getMessage("nextCodeText") + el.nextCode : "";;
         }
-      }else{ //Code ist noch aktuell
+      }else{
 
-        // Soll next code angezeigt werden?
         const nextText = remaining <= 10 ? browser.i18n.getMessage("nextCodeText") + el.nextCode : "";
         if ((el.nextCodeEl.textContent !== nextText) && showNextCode){
           el.nextCodeEl.textContent = nextText;

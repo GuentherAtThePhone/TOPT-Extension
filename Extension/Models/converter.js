@@ -22,7 +22,9 @@ async function parse2fas(str) {
         a.otp.tokenType === 'HOTP' ? Number(a.counter) || 0 : undefined, 
         Number(a.otp.period || a.otp.interval) || (a.type === 'hotp' ? 0 : 30)
     );
-    accounts.push(acc);
+    if(a.otp.tokenType !== "STEAM"){
+      accounts.push(acc);
+    }
   });
   return accounts;
 }
@@ -35,7 +37,6 @@ function base64Decode(str) {
 
 async function decryptEncrypted2fas(str, password) {
   try {
-      // Split: cipher_with_tag : salt : iv
       const parts = str.split(':');
       if(parts.length !== 3) throw new Error("servicesEncrypted erwartet 3 Teile (cipher:salt:iv)");
 
@@ -43,7 +44,6 @@ async function decryptEncrypted2fas(str, password) {
       const saltBytes           = base64Decode(parts[1]);
       const ivBytes             = base64Decode(parts[2]);
 
-      // Cipher + AuthTag trennen (letzte 16 Bytes = Tag)
       const tagLength = 16;
       const authTagBytes = cipherWithTagBytes.slice(-tagLength);
       const cipherBytes   = cipherWithTagBytes.slice(0, cipherWithTagBytes.length - tagLength);
@@ -284,10 +284,10 @@ function parseOtpauthMigration(b64data) {
         }
         // map enums to strings
         const algMap = {1: 'SHA1', 2: 'SHA256', 3: 'SHA512', 4: 'SHA384'};
-        const typeMap = {1: 'totp', 2: 'hotp'};
+        const typeMap = {1: 'HOTP', 2: 'TOTP'};
         const digitsMap = {1: 6, 2: 8};
         const algo = algMap[acc.algorithm] || 'SHA1';
-        const type = typeMap[acc.type] || 'totp';
+        const type = typeMap[acc.type] || 'TOTP';
         const digits = digitsMap[acc.digits] || (acc.digits || 6);
 
         const issuer = acc.issuer || '';
@@ -307,6 +307,7 @@ function parseOtpauthMigration(b64data) {
             30
         );
 
+        console.log(accSingle);
         accounts.push(accSingle);
       } else {
         // skip other fields

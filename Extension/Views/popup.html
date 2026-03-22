@@ -42,22 +42,28 @@
                     ">👁</span>
             </div>
 
-            <label data-i18n="algorithmText"></label>
-            <select id="algorithmInput">
-                <option value="SHA-1">SHA-1</option>
-                <option value="SHA-224">SHA-224</option>
-                <option value="SHA-256">SHA-256</option>
-                <option value="SHA-384">SHA-384</option>
-                <option value="SHA-512">SHA-512</option>
-            </select>
+            <div id="algorithmView">
+                <label data-i18n="algorithmText"></label>
+                <select id="algorithmInput">
+                    <option value="SHA-1">SHA-1</option>
+                    <option value="SHA-224">SHA-224</option>
+                    <option value="SHA-256">SHA-256</option>
+                    <option value="SHA-384">SHA-384</option>
+                    <option value="SHA-512">SHA-512</option>
+                </select>
+            </div>
+            
 
-            <label data-i18n="refreshPeriodText"></label>
-            <select id="periodInput">
-                <option value="10">10</option>
-                <option value="30" selected>30</option>
-                <option value="60">60</option>
-                <option value="90">90</option>
-            </select>
+            <div id="periodView">
+                <label data-i18n="refreshPeriodText"></label>
+                <select id="periodInput">
+                    <option value="10">10</option>
+                    <option value="30" selected>30</option>
+                    <option value="60">60</option>
+                    <option value="90">90</option>
+                </select>
+            </div>
+            
 
             <label data-i18n="numbersText"></label>
             <select id="digitsInput">
@@ -79,6 +85,7 @@
 
         <script src="../librarys/browser-polyfill.js"></script>
         <script src="../Models/totp.js"></script>
+        <script src="../Models/hotp.js"></script>
         <script src="../Models/account.js"></script>
         <script src="../Models/converter.js"></script>
         <script src="../Models/encryption.js"></script>

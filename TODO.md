@@ -8,7 +8,7 @@
 
 ## Roadmap:
 
-- [ ] implement HOTP-Support
+- [x] implement HOTP-Support
 - [ ] allow imports from more apps / formats
 - [ ] implement authentication with biometics
 - [ ] implement tests

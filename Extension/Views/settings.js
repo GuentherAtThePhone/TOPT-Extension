@@ -1,9 +1,7 @@
 const themeSelect = document.getElementById("themeSelect");
-const syncMozillaSelect = document.getElementById("syncMozillaSelect");
 const fontSizeSelect = document.getElementById("fontSizeSelect");
 const showNextCodeSelect = document.getElementById("showNextCodeSelect");
 const useMasterPasswordSelect = document.getElementById("useMasterPasswordSelect");
-const useBiometricsSelect = document.getElementById("useBiometricsSelect");
 
 const saveBtn = document.getElementById("saveBtn");
 const changePwBtn = document.getElementById("changePwBtn");
@@ -89,21 +87,17 @@ browser.storage.local.get("settings").then(async result => {
         
     // TODO
     themeSelect.value = settings.theme;
-    syncMozillaSelect.value = settings.syncMozilla.toString();
     fontSizeSelect.value = settings.fontSize;
     showNextCodeSelect.value = settings.nextCode.toString();
     useMasterPasswordSelect.value = settings.masterPasswordEnabled.toString();
-    useBiometricsSelect.value = settings.useBiometrics.toString();
 });
 
 async function saveSettings(){
     var settings = new Settings(
         themeSelect.value,
-        syncMozillaSelect.value === "true",
         fontSizeSelect.value,
         showNextCodeSelect.value === "true",
         useMasterPasswordSelect.value === "true",
-        useBiometricsSelect.value === "true"
     );
 
     await browser.storage.local.set({settings : settings});

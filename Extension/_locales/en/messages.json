@@ -108,9 +108,6 @@
   "themeDefaultText":{
     "message": "Browser Default"
   },
-  "syncWithMozillaText":{
-    "message": "Sync with Mozilla Account"
-  },
   "fontSizeText":{
     "message": "Font Size"
   },
@@ -131,9 +128,6 @@
   },
   "useMasterPasswordText":{
     "message": "Use Masterpassword"
-  },
-  "useBiometricsText":{
-    "message": "Use biometrie to authenticate"
   },
   "changePasswordText":{
     "message": "Change Password"

@@ -1,17 +1,13 @@
 class Settings{
     theme;
-    syncMozilla;
     fontSize;
     nextCode;
     masterPasswordEnabled;
-    useBiometrics;
-    constructor(theme, syncMozilla, fontSize, nextCode, masterPasswordEnabled, useBiometrics){
+    constructor(theme, fontSize, nextCode, masterPasswordEnabled){
         this.theme = theme;
-        this.syncMozilla = syncMozilla;
         this.fontSize = fontSize;
         this.nextCode = nextCode;
         this.masterPasswordEnabled = masterPasswordEnabled;
-        this.useBiometrics = useBiometrics;
     }
 }
 
@@ -24,11 +20,9 @@ async function createDefaultSettings(){
 
     var settings = new Settings(
         "default",
-        false,
         "medium",
         true,
         result.masterPasswordEnabled,
-        false
     );
 
     await browser.storage.local.set({settings: settings});

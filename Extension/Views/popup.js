@@ -285,7 +285,6 @@ async function renderAccounts() {
       wrapper.classList.remove("dragging");
       draggedElement = null;
 
-      // Reihenfolge neu berechnen
       const newOrder = [...accountsDiv.querySelectorAll(".account")]
         .map(el => accounts[Number(el.dataset.index)]);
 
@@ -301,7 +300,6 @@ async function renderAccounts() {
     const right = document.createElement("div");
     right.className = "account-right";
 
-    // Content wrapper für Name, Code, etc.
     const content = document.createElement("div");
     content.className = "account-content";
 
@@ -315,7 +313,8 @@ async function renderAccounts() {
 
     const codeEl = document.createElement("div");
     codeEl.className = "code";
-    codeEl.addEventListener("click", () => {
+    
+    content.addEventListener("click", () => {
       navigator.clipboard.writeText(codeEl.textContent);
       codeEl.style.color = "green";
       setTimeout(() => (codeEl.style.color = ""), 500);

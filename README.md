@@ -7,6 +7,9 @@ Scanning and processing QR-Codes happens all local on your machine.
 No data leaves your machine!
 No telemetry data is collect as well. All the magic happens right where you want it to happen.
 
+![Couldn´t display picture.](/Examples/images/Popup_view.png "View of the Popup window.")
+![Couldn´t display picture.](/Examples/images/Edit_view.png "View of the Edit window.")
+
 ## Installation
 
 | Browser   | Install from ... | Notes |

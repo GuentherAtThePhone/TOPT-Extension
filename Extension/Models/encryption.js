@@ -39,6 +39,53 @@ async function encrypt(text, password) {
   };
 }
 
+async function decryptProtonAuth(password, saltBase64, contentBase64) {
+  const enc = new TextEncoder();
+
+  // Base64 → ArrayBuffer
+  const salt = Uint8Array.from(atob(saltBase64), c => c.charCodeAt(0));
+  const data = Uint8Array.from(atob(contentBase64), c => c.charCodeAt(0));
+
+  // Passwort → Key Material
+  const keyMaterial = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(password),
+    { name: "PBKDF2" },
+    false,
+    ["deriveKey"]
+  );
+
+  // Key ableiten
+  const key = await crypto.subtle.deriveKey(
+    {
+      name: "PBKDF2",
+      salt: salt,
+      iterations: 100000, // kann variieren!
+      hash: "SHA-256"
+    },
+    keyMaterial,
+    { name: "AES-GCM", length: 256 },
+    false,
+    ["decrypt"]
+  );
+
+  // IV (typisch: erste 12 Bytes)
+  const iv = data.slice(0, 12);
+  const ciphertext = data.slice(12);
+
+  // entschlüsseln
+  const decrypted = await crypto.subtle.decrypt(
+    {
+      name: "AES-GCM",
+      iv: iv
+    },
+    key,
+    ciphertext
+  );
+
+  return new TextDecoder().decode(decrypted);
+}
+
 async function decrypt(encryptedData, password) {
   const dec = new TextDecoder();
   const enc = new TextEncoder();

@@ -17,7 +17,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "authenticator@aldaror",
+      "id": "authenticato@aldaror",
       "data_collection_permissions": {
         "required": [
           "authenticationInfo"

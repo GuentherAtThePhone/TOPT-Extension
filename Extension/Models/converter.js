@@ -87,10 +87,26 @@ async function decryptEncrypted2fas(str, password) {
 
 function parseJson(str) {
    try {
-    const importedAccounts = JSON.parse(str);
+    var importedAccounts = JSON.parse(str);
 
     if (!Array.isArray(importedAccounts)) {
-      throw new Error("wrong format: JSONhas to contain an array.");
+      // Try to convert ProtonAuth format
+      if (importedAccounts.version && Array.isArray(importedAccounts.entries)) {
+        const uris = importedAccounts.entries.map(entry => entry.content.uri);
+        importedAccounts = [];
+        uris.forEach(async uri => {
+          try {
+            const acc = await parseOtpauth(uri);
+            if (acc) importedAccounts.push(acc);
+          } catch (e) {
+            console.warn('Failed to parse otpauth URI from ProtonAuth entry:', e);
+          }
+        });
+      }else if(importedAccounts.version && importedAccounts.salt && importedAccounts.content){
+        // Try to import encrypted protonauth
+      }else {
+        throw new Error("wrong format: JSONhas to contain an array.");
+      }
     }
 
     return importedAccounts;

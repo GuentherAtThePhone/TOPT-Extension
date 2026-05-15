@@ -85,13 +85,15 @@ async function decryptEncrypted2fas(str, password) {
   }
 }
 
-function parseJson(str) {
+async function parseJson(str) {
    try {
     var importedAccounts = JSON.parse(str);
 
     if (!Array.isArray(importedAccounts)) {
+
       // Try to convert ProtonAuth format
       if (importedAccounts.version && Array.isArray(importedAccounts.entries)) {
+
         const uris = importedAccounts.entries.map(entry => entry.content.uri);
         importedAccounts = [];
         uris.forEach(async uri => {
@@ -103,7 +105,8 @@ function parseJson(str) {
           }
         });
       }else if(importedAccounts.version && importedAccounts.salt && importedAccounts.content){
-        // Try to import encrypted protonauth
+        // Trying to import encrypted protonauth
+        window.alert("This seems to be an encrypted Proton Authenticator backup. Please use an unencrypted backup to import the accounts.");
       }else {
         throw new Error("wrong format: JSONhas to contain an array.");
       }

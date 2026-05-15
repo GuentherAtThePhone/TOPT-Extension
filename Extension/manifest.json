@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TOTP Authenticator",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Multi-account offline TOTP generator",
   "default_locale": "en",
   "action": {
@@ -17,7 +17,7 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "authenticato@aldaror",
+      "id": "authenticator@aldaror",
       "data_collection_permissions": {
         "required": [
           "authenticationInfo"

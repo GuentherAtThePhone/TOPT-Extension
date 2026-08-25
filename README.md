@@ -1,11 +1,12 @@
 # README
 
-This project provides a browser extension to generate TOTP´s with.
+This project provides a browser extension to generate TOTP´s with. 
+TOTP´s can be added by scanning QR-Codes or by importing from Apps.
 
-This extension is local first. All the secrets are stored local and all the calculation of the codes is local as well.
+This extension is local only. All the secrets are stored local and all the calculation of the codes is local as well.
 Scanning and processing QR-Codes happens all local on your machine.
-No data leaves your machine!
-No telemetry data is collect as well. All the magic happens right where you want it to happen.
+No data ever leaves your machine!
+No telemetry data, no bullshit.
 
 ![Couldn´t display picture.](/Examples/images/Popup_view.png "View of the Popup window.")
 ![Couldn´t display picture.](/Examples/images/Edit_view.png "View of the Edit window.")
@@ -21,11 +22,25 @@ No telemetry data is collect as well. All the magic happens right where you want
 
 ## Usage
 
-The extension provides the ability to generate TOTP´s (and HTOP´s) within your Browser. No need for an extra app on your smartphone or your pc. All the magic happens right where you want it.
+The extension provides the ability to generate TOTP´s (and HTOP´s) within your Browser. No need for an extra app on your smartphone or your pc. All the magic happens right where you need it.
+
+Just add the Browser extension using the links above.
+
+On the first start you are asked to set a new master password. To diable the master password, just leave the field empty.
 
 ## Development
 
+Visual Studio Code is the recommended IDE for development, but you can use whatever editor you want.
+
 To run the extension during development, make shure to first clone the repository. Then, in Firefox, go to: about:debugging - This Firefox - load temporary add-on - select `Extension/manifest.json`
+
+## Design decisions
+
+The extenison is local only. No syncing is planned nor wanted.
+
+There will never be telemetrics be collected by the extension itself. (However the store it was installed from might collect data. Therefore, please see the stores terms.)
+
+The extension is as minimalistic as possible, while also providing all necessary functions.
 
 ## License
 

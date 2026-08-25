@@ -130,7 +130,7 @@ fileInput.addEventListener('change', async (e) => {
     try{
         if(file.name.toLowerCase().endsWith('.json') || file.name.toLowerCase().endsWith('.2fas')){
             if(file.name.toLowerCase().endsWith('.json')){
-              accs = parseJson(await file.text());
+              accs = await parseJson(await file.text());
               console.log('Parsed accounts from JSON file:', accs);
             }else{
               accs = await parse2fas(await file.text());
@@ -172,11 +172,14 @@ fileInput.addEventListener('change', async (e) => {
       alert(browser.i18n.getMessage("importFailedText") + err.message);
   }
   if(accs && accs.length && qrResult === undefined){
+      console.log("Saving accs");
       accounts.push(...accs);
       await saveAccounts(accounts, password);
       alert(browser.i18n.getMessage("importSuccessfullText").replace("\"{accs.length}\"", accs.length));
       window.close();
   }else{
+    console.log(accs);
+    console.log(accs.length);
   }
 });
 

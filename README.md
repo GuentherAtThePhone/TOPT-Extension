@@ -22,11 +22,14 @@ No telemetry data, no bullshit.
 
 ## Usage
 
-The extension provides the ability to generate TOTP´s (and HTOP´s) within your Browser. No need for an extra app on your smartphone or your pc. All the magic happens right where you need it.
+The extension provides the ability to generate TOTP´s (and HTOP´s) within your Browser. No need for an extra app on your smartphone or your PC. All the magic happens right where you need it.
 
 Just add the Browser extension using the links above.
 
 On the first start you are asked to set a new master password. To diable the master password, just leave the field empty.
+
+**Language:** Currently available: English (default), German.
+The default language provided by your browser is used. There is no way to manually change the language from the extension.
 
 ## Development
 

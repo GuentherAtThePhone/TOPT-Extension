@@ -1,5 +1,6 @@
 ## Roadmap:
 
 - [x] implement HOTP-Support
-- [ ] allow imports from more apps / formats
 - [x] implement tests
+- [ ] allow imports from more apps / formats
+- [ ] add image-support for services

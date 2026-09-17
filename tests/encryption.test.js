@@ -3,13 +3,12 @@
  */
 
 describe('Encryption & Master Password Authentication', () => {
-
   beforeEach(async () => {
     await browser.storage.local.clear();
     await browser.storage.session.clear();
   });
 
-  describe('encrypt() & decrypt()', () => {
+  describe('AES-GCM Encryption & Decryption (encrypt & decrypt)', () => {
     it('should encrypt and decrypt a plaintext string correctly (round-trip)', async () => {
       const plaintext = 'Secret TOTP Account Data: JBSWY3DPEHPK3PXP';
       const password = 'StrongPassword123!';
@@ -18,69 +17,54 @@ describe('Encryption & Master Password Authentication', () => {
 
       expect(encryptedData).toBeDefined();
       expect(Array.isArray(encryptedData.encrypted)).toBe(true);
-      expect(Array.isArray(encryptedData.iv)).toBe(true);
-      expect(Array.isArray(encryptedData.salt)).toBe(true);
-      expect(encryptedData.iv.length).toBe(12);
-      expect(encryptedData.salt.length).toBe(16);
+      expect(encryptedData.iv).toHaveLength(12);
+      expect(encryptedData.salt).toHaveLength(16);
 
       const decrypted = await decrypt(encryptedData, password);
       expect(decrypted).toBe(plaintext);
     });
 
     it('should encrypt and decrypt complex Unicode and JSON strings', async () => {
-      const complexObject = JSON.stringify({
-        accounts: [
-          { name: '🔒 Test & Émile 🚀', secret: 'MZXW6===' }
-        ]
+      const payload = JSON.stringify({
+        accounts: [{ name: '🔒 Test & Émile 🚀', secret: 'MZXW6===' }]
       });
       const password = '🔑 Master Key 2026';
 
-      const encryptedData = await encrypt(complexObject, password);
+      const encryptedData = await encrypt(payload, password);
       const decrypted = await decrypt(encryptedData, password);
 
-      expect(decrypted).toBe(complexObject);
-      expect(JSON.parse(decrypted)).toEqual(JSON.parse(complexObject));
+      expect(decrypted).toBe(payload);
+      expect(JSON.parse(decrypted)).toEqual(JSON.parse(payload));
     });
 
-    it('should fail to decrypt with wrong password', async () => {
-      const plaintext = 'Sensitive payload';
-      const encryptedData = await encrypt(plaintext, 'correct-password');
-
-      let failed = false;
-      try {
-        await decrypt(encryptedData, 'wrong-password');
-      } catch (e) {
-        failed = true;
-      }
-      expect(failed).toBe(true);
+    it('should reject decryption when an incorrect password is provided', async () => {
+      const encryptedData = await encrypt('Sensitive payload', 'correct-password');
+      await expect(decrypt(encryptedData, 'wrong-password')).rejects.toThrow();
     });
 
-    it('should generate different ciphertext and IV for identical plaintexts (salt/IV randomness)', async () => {
-      const plaintext = 'Same text';
-      const password = 'SamePassword';
+    it('should generate unique IV and salt for identical plaintexts (randomized cryptography)', async () => {
+      const text = 'Identical payload';
+      const password = 'IdenticalPassword';
 
-      const enc1 = await encrypt(plaintext, password);
-      const enc2 = await encrypt(plaintext, password);
+      const enc1 = await encrypt(text, password);
+      const enc2 = await encrypt(text, password);
 
-      // IVs and salts should be uniquely randomized
       expect(enc1.iv).not.toEqual(enc2.iv);
       expect(enc1.salt).not.toEqual(enc2.salt);
       expect(enc1.encrypted).not.toEqual(enc2.encrypted);
     });
   });
 
-  describe('hash()', () => {
-    it('should generate 512-bit (128 hex chars) hash and 16-byte (32 hex chars) salt', async () => {
+  describe('PBKDF2 Password Hashing (hash)', () => {
+    it('should generate a 512-bit hash (128 hex chars) and 16-byte salt (32 hex chars)', async () => {
       const result = await hash('myMasterPassword');
 
       expect(result).toBeDefined();
-      expect(result.salt).toBeDefined();
-      expect(result.hash).toBeDefined();
-      expect(result.salt.length).toBe(32); // 16 bytes = 32 hex chars
-      expect(result.hash.length).toBe(128); // 64 bytes = 128 hex chars
+      expect(result.salt).toHaveLength(32); // 16 bytes = 32 hex chars
+      expect(result.hash).toHaveLength(128); // 64 bytes = 128 hex chars
     });
 
-    it('should generate unique salts for successive calls with the same password', async () => {
+    it('should generate unique salts on successive calls for the same password', async () => {
       const res1 = await hash('password');
       const res2 = await hash('password');
 
@@ -89,7 +73,7 @@ describe('Encryption & Master Password Authentication', () => {
     });
   });
 
-  describe('saveMasterPassword() & isMasterPassword()', () => {
+  describe('Master Password Storage & Authentication', () => {
     it('should save hashed master password to local storage', async () => {
       await saveMasterPassword('SuperSecret123');
 
@@ -99,29 +83,23 @@ describe('Encryption & Master Password Authentication', () => {
       expect(stored.masterPassword.salt).toBeDefined();
     });
 
-    it('should verify correct master password returns true', async () => {
+    it('should verify the correct master password successfully', async () => {
       await saveMasterPassword('ValidPassword999');
-
-      const isCorrect = await isMasterPassword('ValidPassword999');
-      expect(isCorrect).toBe(true);
+      expect(await isMasterPassword('ValidPassword999')).toBe(true);
     });
 
-    it('should verify incorrect master password returns false', async () => {
+    it('should reject an incorrect master password', async () => {
       await saveMasterPassword('ValidPassword999');
-
-      const isCorrect = await isMasterPassword('WrongPassword');
-      expect(isCorrect).toBe(false);
+      expect(await isMasterPassword('WrongPassword')).toBe(false);
     });
 
-    it('should return false if no master password is saved', async () => {
-      const isCorrect = await isMasterPassword('SomePassword');
-      expect(isCorrect).toBe(false);
+    it('should return false if no master password has been configured', async () => {
+      expect(await isMasterPassword('SomePassword')).toBe(false);
     });
 
-    it('should return false when passing empty string', async () => {
+    it('should return false when checking an empty string', async () => {
       await saveMasterPassword('ValidPassword');
-      const isCorrect = await isMasterPassword('');
-      expect(isCorrect).toBe(false);
+      expect(await isMasterPassword('')).toBe(false);
     });
   });
 });

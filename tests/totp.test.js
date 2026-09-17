@@ -5,8 +5,17 @@
 describe('TOTP Generator & Base32 Decoding', () => {
   const originalDateNow = Date.now;
 
-  // RFC 6238 Test Secret (20-byte key "12345678901234567890" in Base32)
-  const rfcSecret = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ';
+  // RFC 6238 Appendix B & Errata 2866 Test Secrets:
+  // SHA-1 (20 bytes): "12345678901234567890" in Base32
+  const rfcSecret1 = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ';
+  // SHA-256 (32 bytes): "12345678901234567890123456789012" in Base32
+  const rfcSecret256 = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA';
+  // SHA-512 (64 bytes): "1234567890123456789012345678901234567890123456789012345678901234" in Base32
+  const rfcSecret512 = 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA';
+
+  const setTime = (seconds) => {
+    Date.now = () => seconds * 1000;
+  };
 
   afterEach(() => {
     Date.now = originalDateNow;
@@ -14,148 +23,139 @@ describe('TOTP Generator & Base32 Decoding', () => {
 
   describe('base32ToUint8Array()', () => {
     it('should decode valid standard base32 string', () => {
-      // "JBSWY3DPEHPK3PXP" is Base32 for "Hello!\xde\xad\xbe\xef" -> ascii starts with "Hello!"
       const bytes = base32ToUint8Array('JBSWY3DPEHPK3PXP');
       expect(bytes).toBeDefined();
-      expect(bytes.length).toBe(10);
-      expect(bytes[0]).toBe(72); // 'H'
-      expect(bytes[1]).toBe(101); // 'e'
-      expect(bytes[2]).toBe(108); // 'l'
-      expect(bytes[3]).toBe(108); // 'l'
-      expect(bytes[4]).toBe(111); // 'o'
-      expect(bytes[5]).toBe(33); // '!'
+      expect(bytes).toHaveLength(10);
+      // "JBSWY3DPEHPK3PXP" begins with ASCII "Hello!"
+      expect(new TextDecoder().decode(bytes.subarray(0, 6))).toBe('Hello!');
     });
 
-    it('should decode RFC 20-byte secret', () => {
-      const bytes = base32ToUint8Array(rfcSecret);
-      expect(bytes.length).toBe(20);
-      expect(bytes[0]).toBe(0x31); // '1'
-      expect(bytes[1]).toBe(0x32); // '2'
-      expect(bytes[2]).toBe(0x33); // '3'
-      expect(bytes[3]).toBe(0x34); // '4'
-      expect(bytes[4]).toBe(0x35); // '5'
+    it('should decode RFC 20-byte secret for SHA-1', () => {
+      const bytes = base32ToUint8Array(rfcSecret1);
+      expect(bytes).toHaveLength(20);
+      expect(new TextDecoder().decode(bytes)).toBe('12345678901234567890');
+    });
+
+    it('should decode RFC 32-byte secret for SHA-256', () => {
+      const bytes = base32ToUint8Array(rfcSecret256);
+      expect(bytes).toHaveLength(32);
+      expect(new TextDecoder().decode(bytes)).toBe('12345678901234567890123456789012');
+    });
+
+    it('should decode RFC 64-byte secret for SHA-512', () => {
+      const bytes = base32ToUint8Array(rfcSecret512);
+      expect(bytes).toHaveLength(64);
+      expect(new TextDecoder().decode(bytes)).toBe('1234567890123456789012345678901234567890123456789012345678901234');
     });
 
     it('should handle padding characters and lowercase input', () => {
       const bytesUpper = base32ToUint8Array('MZXW6===');
       const bytesLower = base32ToUint8Array('mzxw6===');
-      expect(bytesUpper.length).toBe(3); // 'foo'
-      expect(bytesUpper[0]).toBe(102); // 'f'
-      expect(bytesUpper[1]).toBe(111); // 'o'
-      expect(bytesUpper[2]).toBe(111); // 'o'
+      expect(bytesUpper).toHaveLength(3);
+      expect(new TextDecoder().decode(bytesUpper)).toBe('foo');
       expect(bytesLower).toEqual(bytesUpper);
     });
 
-    it('should ignore invalid characters like whitespace', () => {
-      const bytes1 = base32ToUint8Array('JBSWY 3DPEH PK3PXP');
-      const bytes2 = base32ToUint8Array('JBSWY3DPEHPK3PXP');
-      expect(bytes1).toEqual(bytes2);
+    it('should ignore whitespace and formatting spaces', () => {
+      const bytesWithSpaces = base32ToUint8Array('JBSWY 3DPEH PK3PXP');
+      const bytesClean = base32ToUint8Array('JBSWY3DPEHPK3PXP');
+      expect(bytesWithSpaces).toEqual(bytesClean);
     });
 
     it('should return empty Uint8Array for empty string', () => {
-      const bytes = base32ToUint8Array('');
-      expect(bytes.length).toBe(0);
+      expect(base32ToUint8Array('')).toHaveLength(0);
     });
   });
 
-  describe('generateTOTP() - RFC 6238 Test Vectors (SHA-1, 8 digits)', () => {
-    const testVectors = [
-      { time: 59, expected: '94287082' },
-      { time: 1111111109, expected: '07081804' },
-      { time: 1111111111, expected: '14050471' },
-      { time: 1234567890, expected: '89005924' },
-      { time: 2000000000, expected: '69279037' },
-      { time: 20000000000, expected: '65353130' }
+  describe('RFC 6238 Test Vectors (SHA-1, 8 digits)', () => {
+    const vectors = [
+      [59, '94287082'],
+      [1111111109, '07081804'],
+      [1111111111, '14050471'],
+      [1234567890, '89005924'],
+      [2000000000, '69279037'],
+      [20000000000, '65353130']
     ];
 
-    testVectors.forEach(({ time, expected }) => {
+    for (const [time, expected] of vectors) {
       it(`should generate code ${expected} at timestamp ${time}s`, async () => {
-        Date.now = () => time * 1000;
-        const code = await generateTOTP(rfcSecret, 8, 30, 'SHA-1', 0);
-        expect(code).toBe(expected);
+        setTime(time);
+        expect(await generateTOTP(rfcSecret1, 8, 30, 'SHA-1')).toBe(expected);
       });
-    });
+    }
   });
 
-  describe('generateTOTP() - Standard 6-digit TOTP (SHA-1)', () => {
-    const testVectors = [
-      { time: 59, expected: '287082' },
-      { time: 1111111109, expected: '081804' },
-      { time: 1111111111, expected: '050471' },
-      { time: 1234567890, expected: '005924' },
-      { time: 2000000000, expected: '279037' }
+  describe('Standard 6-digit TOTP (SHA-1)', () => {
+    const vectors = [
+      [59, '287082'],
+      [1111111109, '081804'],
+      [1111111111, '050471'],
+      [1234567890, '005924'],
+      [2000000000, '279037']
     ];
 
-    testVectors.forEach(({ time, expected }) => {
+    for (const [time, expected] of vectors) {
       it(`should generate 6-digit code ${expected} at timestamp ${time}s`, async () => {
-        Date.now = () => time * 1000;
-        const code = await generateTOTP(rfcSecret, 6, 30, 'SHA-1', 0);
-        expect(code).toBe(expected);
+        setTime(time);
+        expect(await generateTOTP(rfcSecret1, 6, 30, 'SHA-1')).toBe(expected);
       });
-    });
+    }
   });
 
-  describe('generateTOTP() - RFC 6238 Test Vectors (SHA-256, 8 digits)', () => {
-    const testVectors = [
-      { time: 59, expected: '46114546' },
-      { time: 1111111109, expected: '68084774' },
-      { time: 1111111111, expected: '67062674' },
-      { time: 1234567890, expected: '91819424' },
-      { time: 2000000000, expected: '90698825' },
-      { time: 20000000000, expected: '77737706' }
+  describe('RFC 6238 Test Vectors (SHA-256, 8 digits)', () => {
+    const vectors = [
+      [59, '46119246'],
+      [1111111109, '68084774'],
+      [1111111111, '67062674'],
+      [1234567890, '91819424'],
+      [2000000000, '90698825'],
+      [20000000000, '77737706']
     ];
 
-    testVectors.forEach(({ time, expected }) => {
+    for (const [time, expected] of vectors) {
       it(`should generate SHA-256 code ${expected} at timestamp ${time}s`, async () => {
-        Date.now = () => time * 1000;
-        const code = await generateTOTP(rfcSecret, 8, 30, 'SHA-256', 0);
-        expect(code).toBe(expected);
+        setTime(time);
+        expect(await generateTOTP(rfcSecret256, 8, 30, 'SHA-256')).toBe(expected);
       });
-    });
+    }
   });
 
-  describe('generateTOTP() - RFC 6238 Test Vectors (SHA-512, 8 digits)', () => {
-    const testVectors = [
-      { time: 59, expected: '90693936' },
-      { time: 1111111109, expected: '25091201' },
-      { time: 1111111111, expected: '99943326' },
-      { time: 1234567890, expected: '93441996' },
-      { time: 2000000000, expected: '38618901' },
-      { time: 20000000000, expected: '47863826' }
+  describe('RFC 6238 Test Vectors (SHA-512, 8 digits)', () => {
+    const vectors = [
+      [59, '90693936'],
+      [1111111109, '25091201'],
+      [1111111111, '99943326'],
+      [1234567890, '93441116'],
+      [2000000000, '38618901'],
+      [20000000000, '47863826']
     ];
 
-    testVectors.forEach(({ time, expected }) => {
+    for (const [time, expected] of vectors) {
       it(`should generate SHA-512 code ${expected} at timestamp ${time}s`, async () => {
-        Date.now = () => time * 1000;
-        const code = await generateTOTP(rfcSecret, 8, 30, 'SHA-512', 0);
-        expect(code).toBe(expected);
+        setTime(time);
+        expect(await generateTOTP(rfcSecret512, 8, 30, 'SHA-512')).toBe(expected);
       });
-    });
+    }
   });
 
-  describe('generateTOTP() - Period and Offset handling', () => {
+  describe('Period, Offset & Formatting', () => {
     it('should respect custom period (e.g. 60 seconds)', async () => {
-      Date.now = () => 60000; // 60s -> counter with period 60 is 1, with period 30 is 2
-      const code60 = await generateTOTP(rfcSecret, 6, 60, 'SHA-1', 0);
-      const code30 = await generateTOTP(rfcSecret, 6, 30, 'SHA-1', 0);
-      expect(code60).toBe('287082'); // Counter 1
-      expect(code30).toBe('359152'); // Counter 2
+      setTime(60);
+      expect(await generateTOTP(rfcSecret1, 6, 60, 'SHA-1')).toBe('287082'); // Counter 1
+      expect(await generateTOTP(rfcSecret1, 6, 30, 'SHA-1')).toBe('359152'); // Counter 2
     });
 
     it('should generate next period code when offset is +1', async () => {
-      Date.now = () => 0;
-      const currentCode = await generateTOTP(rfcSecret, 6, 30, 'SHA-1', 0);
-      const nextCode = await generateTOTP(rfcSecret, 6, 30, 'SHA-1', 1);
-      expect(currentCode).toBe('755224'); // Counter 0
-      expect(nextCode).toBe('287082'); // Counter 1
+      setTime(0);
+      expect(await generateTOTP(rfcSecret1, 6, 30, 'SHA-1', 0)).toBe('755224'); // Counter 0
+      expect(await generateTOTP(rfcSecret1, 6, 30, 'SHA-1', 1)).toBe('287082'); // Counter 1
     });
 
     it('should pad code with leading zeros if needed', async () => {
-      Date.now = () => 1111111109 * 1000;
-      const code = await generateTOTP(rfcSecret, 6, 30, 'SHA-1', 0);
+      setTime(1111111109);
+      const code = await generateTOTP(rfcSecret1, 6, 30, 'SHA-1');
       expect(code).toBe('081804');
-      expect(code.length).toBe(6);
-      expect(code.startsWith('0')).toBe(true);
+      expect(code).toHaveLength(6);
     });
   });
 });

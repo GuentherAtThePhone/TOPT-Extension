@@ -3,9 +3,8 @@
  */
 
 describe('Converter & Import Utilities', () => {
-
   describe('normalizeAlgo()', () => {
-    it('should normalize SHA variants correctly', () => {
+    it('should normalize various SHA casing and formatting', () => {
       expect(normalizeAlgo('sha1')).toBe('SHA-1');
       expect(normalizeAlgo('SHA-1')).toBe('SHA-1');
       expect(normalizeAlgo('SHA1')).toBe('SHA-1');
@@ -17,7 +16,7 @@ describe('Converter & Import Utilities', () => {
       expect(normalizeAlgo('SHA512')).toBe('SHA-512');
     });
 
-    it('should return null for unsupported algorithms or invalid input', () => {
+    it('should return null for unsupported algorithms or falsy input', () => {
       expect(normalizeAlgo('MD5')).toBeNull();
       expect(normalizeAlgo('')).toBeNull();
       expect(normalizeAlgo(null)).toBeNull();
@@ -25,48 +24,35 @@ describe('Converter & Import Utilities', () => {
     });
   });
 
-  describe('base64UrlToBase64() & base64ToBytes()', () => {
+  describe('Base64 & Base32 Conversions', () => {
     it('should convert URL-safe base64 to standard base64 with padding', () => {
-      // '-' -> '+', '_' -> '/'
-      const urlSafe = 'ab-_cd';
-      const standard = base64UrlToBase64(urlSafe);
-      expect(standard).toBe('ab+/cd==');
+      // '-' -> '+', '_' -> '/', padding with '='
+      expect(base64UrlToBase64('ab-_cd')).toBe('ab+/cd==');
     });
 
-    it('should convert base64 to Uint8Array', () => {
+    it('should decode base64 string to Uint8Array', () => {
       const bytes = base64ToBytes('SGVsbG8='); // "Hello"
-      expect(bytes.length).toBe(5);
-      expect(bytes[0]).toBe(72); // 'H'
-      expect(bytes[4]).toBe(111); // 'o'
+      expect(bytes).toHaveLength(5);
+      expect(new TextDecoder().decode(bytes)).toBe('Hello');
     });
-  });
 
-  describe('base32Encode()', () => {
     it('should encode Uint8Array bytes to Base32 string', () => {
-      const bytes = new Uint8Array([72, 101, 108, 108, 111]); // "Hello"
-      const encoded = base32Encode(bytes);
-      expect(encoded).toBe('JBSWY3DP');
+      const bytes = new TextEncoder().encode('Hello');
+      expect(base32Encode(bytes)).toBe('JBSWY3DP');
     });
   });
 
   describe('readVarint()', () => {
-    it('should decode single byte varints', () => {
+    it('should decode single-byte varints', () => {
       const bytes = new Uint8Array([0x01, 0x2A]);
-      const res1 = readVarint(bytes, 0);
-      expect(res1.value).toBe(1);
-      expect(res1.length).toBe(1);
-
-      const res2 = readVarint(bytes, 1);
-      expect(res2.value).toBe(42);
-      expect(res2.length).toBe(1);
+      expect(readVarint(bytes, 0)).toEqual({ value: 1, length: 1 });
+      expect(readVarint(bytes, 1)).toEqual({ value: 42, length: 1 });
     });
 
     it('should decode multi-byte varints', () => {
       // 300 = 0xAC 0x02
       const bytes = new Uint8Array([0xAC, 0x02]);
-      const res = readVarint(bytes, 0);
-      expect(res.value).toBe(300);
-      expect(res.length).toBe(2);
+      expect(readVarint(bytes, 0)).toEqual({ value: 300, length: 2 });
     });
   });
 
@@ -86,7 +72,7 @@ describe('Converter & Import Utilities', () => {
       expect(acc.period).toBe(30);
     });
 
-    it('should parse TOTP URI with custom digits, algorithm, and period', async () => {
+    it('should parse TOTP URI with custom parameters', async () => {
       const uri = 'otpauth://totp/CustomCorp:admin?secret=HXDMVJECJJWSRB3H&issuer=CustomCorp&algorithm=SHA256&digits=8&period=60';
       const acc = await parseOtpauth(uri);
 
@@ -108,7 +94,7 @@ describe('Converter & Import Utilities', () => {
       expect(acc.period).toBe(0);
     });
 
-    it('should handle URL-encoded characters in path', async () => {
+    it('should handle URL-encoded characters in account label', async () => {
       const uri = 'otpauth://totp/My%20Company%3Atest%40domain.com?secret=JBSWY3DPEHPK3PXP';
       const acc = await parseOtpauth(uri);
 
@@ -118,32 +104,22 @@ describe('Converter & Import Utilities', () => {
     });
 
     it('should return null for non-otpauth protocol', async () => {
-      const acc = await parseOtpauth('https://example.com/totp?secret=JBSWY3DPEHPK3PXP');
-      expect(acc).toBeNull();
+      expect(await parseOtpauth('https://example.com/totp?secret=JBSWY3DPEHPK3PXP')).toBeNull();
     });
 
-    it('should return null when secret parameter is missing', async () => {
-      const acc = await parseOtpauth('otpauth://totp/Test:user?issuer=Test');
-      expect(acc).toBeNull();
+    it('should return null when secret query parameter is missing', async () => {
+      expect(await parseOtpauth('otpauth://totp/Test:user?issuer=Test')).toBeNull();
     });
 
-    it('should return null for invalid URL syntax', async () => {
-      const acc = await parseOtpauth('invalid-uri');
-      expect(acc).toBeNull();
+    it('should return null for invalid URL string', async () => {
+      expect(await parseOtpauth('invalid-uri')).toBeNull();
     });
   });
 
-  describe('Google Authenticator Migration (parseOtpauthMigration / parseGoogleAuth)', () => {
-    // Helper to build a minimal protobuf OTPParameters payload
+  describe('Google Authenticator Migration (otpauth-migration)', () => {
+    // Helper to generate a minimal Protobuf payload matching Google Authenticator migration format
     function createTestMigrationPayload() {
-      // OTPParameters:
-      // Field 1 (secret bytes): [0x48, 0x65, 0x6c, 0x6c, 0x6f] ("Hello" -> Base32 "JBSWY3DP")
-      // Field 2 (name string): "user@gmail.com"
-      // Field 3 (issuer string): "Google"
-      // Field 4 (algorithm): 1 (SHA1)
-      // Field 5 (digits): 1 (6 digits)
-      // Field 6 (type): 2 (TOTP)
-      const secretBytes = [0x48, 0x65, 0x6c, 0x6c, 0x6f];
+      const secretBytes = [0x48, 0x65, 0x6c, 0x6c, 0x6f]; // "Hello" -> Base32 "JBSWY3DP"
       const nameBytes = Array.from(new TextEncoder().encode('user@gmail.com'));
       const issuerBytes = Array.from(new TextEncoder().encode('Google'));
 
@@ -156,23 +132,21 @@ describe('Converter & Import Utilities', () => {
         (6 << 3) | 0, 2  // TOTP
       ];
 
-      // Outer message: field 1 (OTPParameters), length delimited
       const outerBytes = [
         (1 << 3) | 2, otpParamBytes.length, ...otpParamBytes
       ];
 
-      // Convert to Base64
       let binStr = '';
-      for (let b of outerBytes) binStr += String.fromCharCode(b);
+      for (const b of outerBytes) binStr += String.fromCharCode(b);
       return btoa(binStr);
     }
 
-    it('should parse protobuf migration payload correctly', () => {
+    it('should parse protobuf migration payload via parseOtpauthMigration()', () => {
       const b64 = createTestMigrationPayload();
       const accounts = parseOtpauthMigration(b64);
 
       expect(accounts).toBeDefined();
-      expect(accounts.length).toBe(1);
+      expect(accounts).toHaveLength(1);
       expect(accounts[0].name).toBe('user@gmail.com');
       expect(accounts[0].issuer).toBe('Google');
       expect(accounts[0].secret).toBe('JBSWY3DP');
@@ -180,24 +154,23 @@ describe('Converter & Import Utilities', () => {
       expect(accounts[0].type).toBe('TOTP');
     });
 
-    it('should parse full otpauth-migration:// URL via parseGoogleAuth', () => {
+    it('should parse full otpauth-migration:// URL via parseGoogleAuth()', () => {
       const b64 = createTestMigrationPayload();
       const migrationUrl = `otpauth-migration://offline?data=${encodeURIComponent(b64)}`;
       const accounts = parseGoogleAuth(migrationUrl);
 
       expect(accounts).toBeDefined();
-      expect(accounts.length).toBe(1);
+      expect(accounts).toHaveLength(1);
       expect(accounts[0].issuer).toBe('Google');
     });
 
-    it('should return null for migration URL without data param', () => {
-      const result = parseGoogleAuth('otpauth-migration://offline');
-      expect(result).toBeNull();
+    it('should return null for migration URL without data query parameter', () => {
+      expect(parseGoogleAuth('otpauth-migration://offline')).toBeNull();
     });
   });
 
-  describe('parse2fas()', () => {
-    it('should parse unencrypted 2FAS JSON backup', async () => {
+  describe('2FAS Backup Import (parse2fas)', () => {
+    it('should parse unencrypted 2FAS JSON and filter out unsupported token types', async () => {
       const twoFasJson = JSON.stringify({
         services: [
           {
@@ -216,9 +189,7 @@ describe('Converter & Import Utilities', () => {
           {
             name: 'Steam Account',
             secret: 'STEAMSECRET',
-            otp: {
-              tokenType: 'STEAM'
-            }
+            otp: { tokenType: 'STEAM' }
           }
         ]
       });
@@ -226,8 +197,7 @@ describe('Converter & Import Utilities', () => {
       const accounts = await parse2fas(twoFasJson);
 
       expect(accounts).toBeDefined();
-      // STEAM accounts should be filtered out
-      expect(accounts.length).toBe(1);
+      expect(accounts).toHaveLength(1); // Steam is filtered out
       expect(accounts[0].name).toBe('GitHub');
       expect(accounts[0].secret).toBe('JBSWY3DPEHPK3PXP');
       expect(accounts[0].account).toBe('octocat');
@@ -235,7 +205,7 @@ describe('Converter & Import Utilities', () => {
       expect(accounts[0].type).toBe('TOTP');
     });
 
-    it('should parse HOTP service from 2FAS JSON', async () => {
+    it('should parse HOTP service from 2FAS JSON with counter', async () => {
       const twoFasJson = JSON.stringify({
         services: [
           {
@@ -255,14 +225,14 @@ describe('Converter & Import Utilities', () => {
       });
 
       const accounts = await parse2fas(twoFasJson);
-      expect(accounts.length).toBe(1);
+      expect(accounts).toHaveLength(1);
       expect(accounts[0].counter).toBe(5);
       expect(accounts[0].type).toBe('HOTP');
     });
   });
 
-  describe('parseJson()', () => {
-    it('should parse standard array of accounts', async () => {
+  describe('JSON & Proton Authenticator Import (parseJson)', () => {
+    it('should parse standard JSON array of accounts', async () => {
       const rawJson = JSON.stringify([
         {
           name: 'Account 1',
@@ -276,7 +246,7 @@ describe('Converter & Import Utilities', () => {
 
       const accounts = await parseJson(rawJson);
       expect(accounts).toBeDefined();
-      expect(accounts.length).toBe(1);
+      expect(accounts).toHaveLength(1);
       expect(accounts[0].name).toBe('Account 1');
       expect(accounts[0].secret).toBe('JBSWY3DPEHPK3PXP');
     });
@@ -295,7 +265,7 @@ describe('Converter & Import Utilities', () => {
 
       const accounts = await parseJson(protonJson);
       expect(accounts).toBeDefined();
-      expect(accounts.length).toBe(1);
+      expect(accounts).toHaveLength(1);
       expect(accounts[0].issuer).toBe('Proton');
       expect(accounts[0].account).toBe('user@pm.me');
     });

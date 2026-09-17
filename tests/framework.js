@@ -200,17 +200,18 @@
           }
 
           let match = threw;
+          const errMsg = errorThrown ? (errorThrown.message || errorThrown.name || String(errorThrown)) : '';
           if (threw && pattern) {
             if (typeof pattern === 'string') {
-              match = errorThrown.message.includes(pattern);
+              match = errMsg.includes(pattern);
             } else if (pattern instanceof RegExp) {
-              match = pattern.test(errorThrown.message);
+              match = pattern.test(errMsg);
             }
           }
 
           this._assert(
             match,
-            `Expected promise ${this.isNegated ? 'not ' : ''}to reject ${pattern ? `with error matching "${pattern}"` : ''}, but ${threw ? `rejected with "${errorThrown.message}"` : 'it resolved'}`
+            `Expected promise ${this.isNegated ? 'not ' : ''}to reject ${pattern ? `with error matching "${pattern}"` : ''}, but ${threw ? `rejected with "${errMsg}"` : 'it resolved'}`
           );
         }
       };

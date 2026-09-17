@@ -42,7 +42,8 @@ loadScript('./totp.test.js');
 loadScript('./hotp.test.js');
 loadScript('./converter.test.js');
 loadScript('./encryption.test.js');
-loadScript('./models.test.js');
+loadScript('./account.test.js');
+loadScript('./settings.test.js');
 
 // ANSI Color Helpers for terminal output
 const colors = {

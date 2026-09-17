@@ -37,6 +37,20 @@ Visual Studio Code is the recommended IDE for development, but you can use whate
 
 To run the extension during development, make shure to first clone the repository. Then, in Firefox, go to: about:debugging - This Firefox - load temporary add-on - select `Extension/manifest.json`
 
+## Running Tests (AI-Generated)
+
+This project includes automated unit and integration tests covering TOTP/HOTP calculation (RFC 6238 & RFC 4226), converter imports, encryption, and models.
+
+### Option 1: In the Browser (Zero Setup)
+Simply open [`tests/index.html`](tests/index.html) in any web browser (Firefox, Chrome, Edge) to run all tests with an interactive visual dashboard.
+
+### Option 2: Using Node.js
+If Node.js is installed, run:
+```bash
+npm test
+```
+
+
 ## Design decisions
 
 The extenison is local only. No syncing is planned nor wanted.

@@ -36,6 +36,7 @@ loadScript('../Extension/Models/hotp.js');
 loadScript('../Extension/Models/converter.js');
 loadScript('../Extension/Models/encryption.js');
 loadScript('../Extension/Models/settingsModel.js');
+loadScript('../Extension/Models/qr-scanner.js');
 
 // 4. Load Test Suites
 loadScript('./totp.test.js');
@@ -44,6 +45,8 @@ loadScript('./converter.test.js');
 loadScript('./encryption.test.js');
 loadScript('./account.test.js');
 loadScript('./settings.test.js');
+loadScript('./qr-import.test.js');
+loadScript('./proton-import.test.js');
 
 // ANSI Color Helpers for terminal output
 const colors = {

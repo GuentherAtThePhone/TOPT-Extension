@@ -109,6 +109,58 @@ if (typeof browser === 'undefined') {
   initBrowserMock();
 }
 
+// ─── Canvas & Document Mock (für Node.js-Umgebung) ───────────────────────
+// processImageForQR benötigt document.createElement('canvas') und eine
+// 2D-Kontext-API. In Node.js existieren diese nicht nativ.
+if (typeof document === 'undefined') {
+  function makeFakeCanvasCtx() {
+    return {
+      save: () => {},
+      restore: () => {},
+      clearRect: () => {},
+      drawImage: () => {},
+      translate: () => {},
+      rotate: () => {},
+      getImageData: (x, y, w, h) => ({
+        data: new Uint8ClampedArray(w * h * 4),
+        width: w,
+        height: h
+      }),
+      putImageData: () => {},
+      beginPath: () => {},
+      moveTo: () => {},
+      lineTo: () => {},
+      stroke: () => {},
+      strokeStyle: '',
+      lineWidth: 0
+    };
+  }
+
+  function makeFakeCanvas() {
+    const canvas = {
+      width: 0,
+      height: 0,
+      id: '',
+      style: {},
+      getContext: () => makeFakeCanvasCtx()
+    };
+    return canvas;
+  }
+
+  globalThis.document = {
+    createElement: (tag) => {
+      if (tag === 'canvas') return makeFakeCanvas();
+      return {};
+    },
+    getElementById: () => null
+  };
+}
+
+// Stelle sicher, dass jsQR global verfügbar ist (als Platzhalter für Tests)
+if (typeof jsQR === 'undefined') {
+  globalThis.jsQR = function () { return null; };
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { StorageAreaMock, initBrowserMock };
 }
